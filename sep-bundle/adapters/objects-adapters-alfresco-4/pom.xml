@@ -1,0 +1,85 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>objects-adapters-alfresco-4</artifactId>
+	<groupId>com.sirma.itt.objects</groupId>
+
+	<parent>
+		<groupId>com.sirma.itt.sep</groupId>
+		<artifactId>adapters</artifactId>
+		<version>1.5.0-SNAPSHOT</version>
+	</parent>
+
+	<properties>
+		<cmf.version>${project.version}</cmf.version>
+		<objects.version>${project.version}</objects.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.sirma.itt.objects</groupId>
+				<artifactId>objects-api</artifactId>
+				<version>${objects.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sirma.itt.cmf</groupId>
+				<artifactId>cmf-adapters-alfresco-4.0</artifactId>
+				<version>${cmf.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>com.sirma.itt.objects</groupId>
+			<artifactId>objects-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sirma.itt.cmf</groupId>
+			<artifactId>cmf-adapters-alfresco-4.0</artifactId>
+		</dependency>
+	</dependencies>
+
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/*CITest.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<profiles>
+		<profile>
+			<id>unit-test</id>
+		</profile>
+		<profile>
+			<id>integration-test</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<skip>true</skip>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<configuration>
+							<reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+							<includes>
+								<include>**/*CITest.java</include>
+							</includes>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>
