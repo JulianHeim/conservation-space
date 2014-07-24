@@ -1,0 +1,23 @@
+{
+	'name':'EMF_EVENTS5',
+	'version':'1.0.0',
+	'nickName':'EMF_EVENTS_TEST',
+	'description':'Collected data for EMF events',
+
+	'payloadData':
+	[
+		{'name':'eventdate','type':'STRING'},
+		{'name':'action','type':'STRING'},
+		{'name':'username','type':'STRING'},
+		{'name':'objectsysid','type':'STRING'},
+		{'name':'objecttype','type':'STRING'},
+		{'name':'objecttitle','type':'STRING'},
+		{'name':'objectsubtype','type':'STRING'},
+		{'name':'objectid','type':'STRING'},
+		{'name':'objecturl','type':'STRING'},
+		{'name':'actionid','type':'STRING'},
+		{'name':'objectstate','type':'STRING'},
+		{'name':'projectid','type':'STRING'},
+		{'name':'caseid','type':'STRING'}
+	]
+}

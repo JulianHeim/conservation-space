@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<h:panelGroup id="myActivitiesPanel" styleClass="dashboard-panel activity-panel list-content" layout="block">
+
+		<div class="panel-header rf-p-hdr">
+			<span>#{label['cmf.user.dashboard.activities.panel.header']}</span>
+		</div>
+
+		<div class="panel-toolbar">
+			<div class="item-selector-panel-wrapper dashboard-filters">
+				<ui:include src="/common/item-selector.xhtml">
+					<ui:param name="id" value="activityOwnershipFilters" />
+					<ui:param name="listId" value="activtyOwnershipList" />
+					<ui:param name="activatorLinkValue" value="#{myActivitiesPanel.ownershipFilterActivatorLinkLabel}" />
+					<ui:param name="itemsList" value="#{myActivitiesPanel.ownershipFilters}" />
+					<ui:param name="action" value="#{myActivitiesPanel}" />
+					<ui:param name="ajaxLinks" value="true" />
+					<ui:param name="ajaxLoaderTarget" value=".my-activity-list-panel-body" />
+					<ui:param name="refreshIds" value="activitiesList" />
+					<ui:param name="renderDescription" value="false" />
+					<ui:param name="activatorPrefix" value="myActivitiesPanel" />
+				</ui:include>
+			</div>
+			
+			<div class="item-selector-panel-wrapper dashboard-filters">
+				<ui:include src="/common/item-selector.xhtml">
+					<ui:param name="id" value="activityDateFilter" />
+					<ui:param name="listId" value="activityDateList" />
+					<ui:param name="activatorLinkValue" value="#{myActivitiesPanel.dateFilterActivatorLinkLabel}" />
+					<ui:param name="itemsList" value="#{myActivitiesPanel.dateFilters}" />
+					<ui:param name="action" value="#{myActivitiesPanel}" />
+					<ui:param name="ajaxLinks" value="true" />
+					<ui:param name="refreshIds" value="activitiesList" />
+					<ui:param name="ajaxLoaderTarget" value=".my-activity-list-panel-body" />
+					<ui:param name="renderDescription" value="false" />
+					<ui:param name="activatorPrefix" value="myActivitiesPanel" />
+				</ui:include>
+			</div>
+			
+			<span class="refresh"> 
+				<a4j:commandLink id="refreshMyActivitiesPanel" action="#{myActivitiesPanel.executeDefaultFilter()}"
+					oncomplete="EMF.ajaxloader.hideLoading('.my-activity-list-panel-body');" 
+					onclick="EMF.ajaxloader.showLoading('.my-activity-list-panel-body');"
+					styleClass="glyphicon glyphicon-refresh"
+					render="activitiesList"> 
+				</a4j:commandLink>
+			</span>
+		</div>	
+			
+		<div class="panel-body my-activity-list-panel-body">
+			<rich:list id="activitiesList" value="#{myActivitiesPanel.activit}" var="activity" type="unordered">
+				<div class="recent-activity">
+					<span class="icon-cell">
+						<h:graphicImage library="images" name="user-icon-32.png" styleClass="header-icon" />
+					</span>
+					<span class="data-cell"> 
+						<span>#{activity.user.displayName}</span>
+						<span class="reserve">#{activity.action}</span>
+						<span>
+							<a href="#{activity.url}">
+								<h:graphicImage library="images" name="#{activity.iconPath}" styleClass="header-icon" />#{activity.name}
+							</a>
+						</span>
+						<h:panelGroup layout="block" rendered="#{activity.root != null}"> 
+							<span class="reserve">#{label['cmf.user.dashboard.activities.panel.in']}</span>
+							<span>
+								<h:graphicImage library="images" name="#{activity.root.iconPath}" styleClass="header-icon" />#{activity.root.name}
+							</span>
+						</h:panelGroup>
+						<h:panelGroup layout="block" rendered="#{activity.parent != null}"> 
+							<span>
+								<h:graphicImage library="images" name="#{activity.parent.iconPath}" styleClass="header-icon" />#{activity.parent.name}
+							</span>
+						</h:panelGroup>
+						<span class="timesince">#{activity.timesince}</span>
+					</span>
+				</div>
+			</rich:list>
+		</div>
+
+	</h:panelGroup>
+
+</ui:composition>

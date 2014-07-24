@@ -1,0 +1,108 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.sirma</groupId>
+		<artifactId>jee6</artifactId>
+		<version>4</version>
+	</parent>
+
+	<groupId>com.sirma.itt.emf.bam</groupId>
+	<artifactId>emf-bam</artifactId>
+	<version>0.2.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<sep.version>1.5.0-SNAPSHOT</sep.version>
+		<emf-bam.version>0.2.1-SNAPSHOT</emf-bam.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- BAM -->
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>emf-bam-api</artifactId>
+				<version>${emf-bam.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>emf-bam-impl</artifactId>
+				<version>${emf-bam.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>bam-cmf-integration</artifactId>
+				<version>${emf-bam.version}</version>
+			</dependency>
+
+			<!-- EMF -->
+			<dependency>
+				<groupId>com.sirma.itt.emf</groupId>
+				<artifactId>emf-core-api</artifactId>
+				<version>${sep.version}</version>
+			</dependency>
+
+			<!-- CMF -->
+			<dependency>
+				<groupId>com.sirma.itt.cmf</groupId>
+				<artifactId>cmf-core-api</artifactId>
+				<version>${sep.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.sirma.itt.cmf</groupId>
+				<artifactId>cmf-adapters-alfresco-4.0</artifactId>
+				<version>${sep.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.sirma.itt.cmf</groupId>
+				<artifactId>cmf-web</artifactId>
+				<version>${sep.version}</version>
+			</dependency>
+
+			<!-- objects -->
+			<dependency>
+				<groupId>com.sirma.itt.objects</groupId>
+				<artifactId>objects-api</artifactId>
+				<version>${sep.version}</version>
+			</dependency>
+
+			<!-- pm -->
+			<dependency>
+				<groupId>com.sirma.itt.pm</groupId>
+				<artifactId>pm-core-api</artifactId>
+				<version>${sep.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sirma.itt.pm</groupId>
+				<artifactId>pm-web</artifactId>
+				<version>${sep.version}</version>
+			</dependency>
+
+			<!-- Other dependencies -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>1.3.2</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>1.7.5</version>
+				<scope>provided</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<modules>
+		<module>emf-bam-api</module>
+		<module>emf-bam-impl</module>
+		<module>bam-cmf-integration</module>
+		<module>bam-pm-integration</module>
+	</modules>
+</project>
