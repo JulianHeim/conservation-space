@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<ui:remove><!-- action button for object move operation --></ui:remove>
+	<h:panelGroup rendered="#{objectActionButtonRenderConditions.renderObjectMoveSameCase(action,currentInstance)}">
+		<a4j:commandLink id="moveObjectSameCaseActionButton"
+			action="#{actionsManager.executeAllowedAction(action, currentInstance)}"
+			oncomplete="CMF.action.moveInstance({instanceId:'#{currentInstance.getId()}', instanceType:'#{currentInstance.getClass().getSimpleName().toLowerCase()}', sourceId:'#{currentInstance.getOwningInstance() != null ? currentInstance.getOwningInstance().getId(): ''}', sourceType:'#{currentInstance.getOwningInstance() != null ? currentInstance.getOwningInstance().getClass().getSimpleName().toLowerCase(): ''}'});"
+			disabled="#{action.disabled}"
+			styleClass="#{actionsManager.getActionStyleClass(btnActionClass, currentInstance, action, minActionsMode)}"
+			value=""
+			immediate="#{action.immediateAction}"
+			render=""
+			execute="@this"
+			rendered="#{renderCondition}">
+			<span class="button-label">#{minActionsMode != null ? '' : action.label}</span>
+			<div class="tooltip">
+				<span>#{action.label}</span>
+			</div>
+		</a4j:commandLink>
+	</h:panelGroup>
+	
+	<ui:remove><!-- action button for clone object --></ui:remove>
+	<h:panelGroup rendered="#{objectActionButtonRenderConditions.renderCloneObjectButton(action,currentInstance)}">
+		<a4j:commandLink id="cloneActionButton"
+			action="#{actionsManager.executeAllowedAction(action, currentInstance)}"
+			oncomplete="OBJ.objectsSectionPicker('#{action.identifier}', '#{currentInstance.getId()}', '#{currentInstance.getOwningInstance() != null ? currentInstance.getOwningInstance().getId():'' }', null, '#{documentContext.CaseInstance != null ? documentContext.CaseInstance.getId() : ''}');"
+			disabled="#{action.disabled}"
+			styleClass="#{actionsManager.getActionStyleClass(btnActionClass, currentInstance, action, minActionsMode)}"
+			value=""
+			immediate="#{action.immediateAction}"
+			render="closingReasonPopup"
+			execute="@this"
+			rendered="#{renderCondition}">
+			<span class="button-label">#{minActionsMode != null ? '' : action.label}</span>
+			<div class="tooltip">
+				<span>#{action.label}</span>
+			</div>
+		</a4j:commandLink>
+	</h:panelGroup>
+	
+	<ui:remove><!-- action button for add object thumbnail operation --></ui:remove>
+	<h:panelGroup rendered="#{objectActionButtonRenderConditions.renderAddObjectThumbnail(action,currentInstance)}">
+		<a4j:commandLink id="addThumbnailActionButton"
+			action="#{actionsManager.executeAllowedAction(action, currentInstance)}"
+			oncomplete="EMF.search.picker.image('#{currentInstance.getId()}');"
+			disabled="#{action.disabled}"
+			styleClass="#{actionsManager.getActionStyleClass(btnActionClass, currentInstance, action, minActionsMode)}"
+			value=""
+			immediate="#{action.immediateAction}"
+			render=""
+			execute="@this"
+			rendered="#{renderCondition}">
+			<span class="button-label">#{minActionsMode != null ? '' : action.label}</span>
+			<div class="tooltip">
+				<span>#{action.label}</span>
+			</div>
+		</a4j:commandLink>
+	</h:panelGroup>
+	
+	<ui:remove><!-- action button for attach objects --></ui:remove>
+	<h:panelGroup rendered="#{objectActionButtonRenderConditions.renderAttachObject(action,currentInstance)}">
+		<a4j:commandLink id="attachObjectActionButton"
+			action="#{actionsManager.executeAllowedAction(action, currentInstance)}"
+			oncomplete="EMF.search.picker.attachObject('#{currentInstance.getId()}','#{currentInstance.getClass().getSimpleName().toLowerCase()}');"
+			disabled="#{action.disabled}"
+			styleClass="#{actionsManager.getActionStyleClass(btnActionClass, currentInstance, action, minActionsMode)}"
+			value=""
+			immediate="#{action.immediateAction}"
+			render="closingReasonPopup"
+			execute="@this"
+			rendered="#{renderCondition}">
+			<span class="button-label">#{minActionsMode != null ? '' : action.label}</span>
+			<div class="tooltip">
+				<span>#{action.label}</span>
+			</div>
+		</a4j:commandLink>
+	</h:panelGroup>
+	
+</ui:composition>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:emf="http://com.sirma.itt.emf"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<h:panelGroup id="myWorkflowsPanel" styleClass="dashboard-panel list-content my-workflows-panel" layout="block">
+
+		<div class="panel-header rf-p-hdr">
+			<span>#{label['cmf.workflow.panel.header.title']}</span>
+		</div>
+		
+		<h:panelGroup id="caseWorkflowPanelToolbar" styleClass="panel-toolbar" layout="block">
+		
+		<div class="item-selector-panel-wrapper dashboard-filters">
+				<ui:include src="/common/item-selector.xhtml">
+					<ui:param name="id" value="caseWorkflowFilters" />
+					<ui:param name="listId" value="caseWorkflowFilterList" />
+					<ui:param name="activatorLinkValue" value="#{caseWorkflowPanel.workflowActivatorLinkLabel}" />
+					<ui:param name="itemsList" value="#{caseWorkflowPanel.caseWorkflowFilters}" />
+					<ui:param name="action" value="#{caseWorkflowPanel}" />
+					<ui:param name="ajaxLinks" value="true" />
+					<ui:param name="ajaxLoaderTarget" value=".case-workflows-panel-body" />
+					<ui:param name="renderId" value="caseWorkflowsList" />
+					<ui:param name="renderDescription" value="false" />
+					<ui:param name="activatorPrefix" value="caseWorkflowsList" />
+					<ui:param name="oncomplete" value="$('.load-cases-link').click()" />
+				</ui:include>
+			</div>
+			
+			<emf:panel id="caseWorkflowToolbarActions" styleClass="allowed-actions-inline">
+				<ui:include src="/common/min-allowed-actions.xhtml">
+					<ui:param name="actionsList" value="#{caseWorkflowPanel.dashletActions}" />
+					<ui:param name="currentInstance" value="#{caseInstance}" />
+					<ui:param name="visibleActions" value="0" />
+					<ui:param name="btnActionClass" value="drop-down-actions" />
+					<ui:param name="actionTitle" value="#{label['cmf.btn.actions']}" />
+				</ui:include>
+			</emf:panel>
+			
+			<span class="refresh"> 
+				<a4j:commandLink id="refreshmyWorkflowsPanel" action="#{caseWorkflowPanel.executeDefaultFilter()}"
+					oncomplete="EMF.ajaxloader.hideLoading('.case-workflows-panel-body');" 
+					onclick="EMF.ajaxloader.showLoading('.case-workflows-panel-body');"
+					styleClass="glyphicon glyphicon-refresh"
+					execute="@this" render="workflowList"> 
+				</a4j:commandLink>
+			</span>
+		</h:panelGroup>
+		
+		<div class="panel-body case-workflows-panel-body clearfix">
+			<rich:list id="caseWorkflowsList" value="#{caseWorkflowPanel.caseWorkflows}" var="workflow" type="unordered"
+				styleClass="workflow-history-list" rowClass="list-item">
+				<emf:treeHeader currentInstance="#{workflow}" mode="#{dashletsTreeHeaderMode}" 
+					display="current_only" size="#{dashletsTreeHeaderSize}" />
+				<div class="item-link-min">
+					<ui:include src="/common/min-allowed-actions.xhtml">
+							<ui:param name="actionsList" value="#{caseWorkflowPanel.getWorkflowActions(workflow)}" />
+							<ui:param name="currentInstance" value="#{workflow}" />
+							<ui:param name="styleClass" value="horizontal-actions-view" />
+							<ui:param name="btnActionClass" value="drop-down-actions" />
+							<ui:param name="ajaxLoaderRenderElement" value=".case-workflows-panel-body" />
+							<ui:param name="visibleActions" value="0" />
+							<ui:param name="actionTooltip" value="#{label['cmf.btn.tooltip.actions']}" />
+					</ui:include>
+				</div>
+				<ui:include src="/workflow/includes/workflow-cancel-popup.xhtml">
+					<ui:param name="currentInstanceObject" value="#{workflow}" />
+				</ui:include>
+			</rich:list>
+		</div>
+
+		<a4j:commandLink id="refreshCaseWorkflowsDashlet" value="refreshCaseWorkflowsDashlet" action="refreshCaseWorkflowsDashlet" 
+			onclick="EMF.ajaxloader.showLoading('.case-workflows-panel-body');" 
+			oncomplete="EMF.ajaxloader.hideLoading('.case-workflows-panel-body');"
+			styleClass="load-case-workflows-link hide" 
+			render="caseWorkflowsList" execute="@this" />
+	</h:panelGroup>
+
+</ui:composition>
