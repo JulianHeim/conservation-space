@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<definition id="topicDefinition" type="topic" referenceId="commentDefinition" >
+	<fields>
+		<field name="type" type="an..20" uri="emf:type" />
+		<field name="status" type="an..10" uri="emf:status" codelist="CL11" />
+		<field name="title" type="an..200" uri="dc:title" />
+		<field name="about" type="an..100" uri="emf:commentsOn"><control id="INSTANCE" /></field>
+		<field name="aboutSection" type="an..100" uri="emf:commentsOnSection"><control id="INSTANCE" /></field>
+		<field name="imageAnnotation" type="an..100" uri="emf:hasImageAnnotation"><control id="INSTANCE" /></field>
+		<field name="tags" type="an..100" uri="emf:tag" />
+	</fields>
+
+    <transitions>
+    	<!-- Adds the the comment transitions the post comment action -->
+		<transition id="createComment" label="topicDefinition.createComment.btn.title" eventId="createComment" purpose="action"/>
+		<transition id="suspend" label="topicDefinition.suspend.btn.title" eventId="suspend" purpose="action"/>
+		<transition id="restart" label="topicDefinition.restart.btn.title" eventId="restart" purpose="action"/>
+	</transitions>
+
+	<stateTransitions>
+		<stateTransition from="*" transition="createTopic" to="IN_PROGRESS"/>
+
+		<stateTransition from="IN_PROGRESS" transition="editDetails" to="IN_PROGRESS"/>
+		<stateTransition from="IN_PROGRESS" transition="createComment" to="IN_PROGRESS"/>
+		<stateTransition from="IN_PROGRESS" transition="suspend" to="ON_HOLD"/>
+		<stateTransition from="IN_PROGRESS" transition="delete" to="DELETED" />
+
+		<stateTransition from="ON_HOLD" transition="restart" to="IN_PROGRESS"/>
+		<stateTransition from="ON_HOLD" transition="delete" to="DELETED" />
+
+		<stateTransition from="*" transition="delete" to="DELETED" />
+	</stateTransitions>
+
+	<allowedChildren>
+		<child type="comment" id="ALL" />
+	</allowedChildren>
+
+	<labels>
+		<label id="topicDefinition.createComment.btn.title">
+			<value lang="bg">Добави коментар</value>
+			<value lang="en">Post comment</value>
+		</label>
+	</labels>
+</definition>

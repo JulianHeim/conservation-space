@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:emf="http://com.sirma.itt.emf"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<h:panelGroup id="tasksPanel" styleClass="dashboard-panel list-content tasks-panel" layout="block">
+		
+		<div class="panel-header rf-p-hdr">
+			<span>#{label['cmf.workflow.tasks.panel.header.title']}</span>
+		</div>
+		
+		<h:panelGroup id="caseTasksPanelToolbar" styleClass="panel-toolbar" layout="block">
+			<div class="item-selector-panel-wrapper dashboard-filters">
+				<ui:include src="/common/item-selector.xhtml">
+					<ui:param name="id" value="tasksFilter" />
+					<ui:param name="listId" value="tasksFilterList" />
+					<ui:param name="activatorLinkValue" value="#{caseTasksPanel.taskFilterActivatorLinkLabel}" />
+					<ui:param name="itemsList" value="#{caseTasksPanel.taskFilters}" />
+					<ui:param name="action" value="#{caseTasksPanel}" />
+					<ui:param name="ajaxLinks" value="true" />
+					<ui:param name="ajaxLoaderTarget" value=".case-tasks-panel-body" />
+					<ui:param name="renderId" value="tasksList" />
+					<ui:param name="renderDescription" value="false" />
+					<ui:param name="activatorPrefix" value="tasksPanel" />
+					<ui:param name="oncomplete" value="$('.load-case-tasks-link').click()" />
+				</ui:include>
+			</div>
+			
+			<emf:panel id="caseTasksToolbarActions" styleClass="allowed-actions-inline">
+				<ui:include src="/common/min-allowed-actions.xhtml">
+					<ui:param name="actionsList" value="#{caseTasksPanel.dashletActions}" />
+					<ui:param name="currentInstance" value="#{caseInstance}" />
+					<ui:param name="visibleActions" value="0" />
+					<ui:param name="btnActionClass" value="drop-down-actions" />
+					<ui:param name="actionTitle" value="#{label['cmf.btn.actions']}" />
+				</ui:include>
+			</emf:panel>
+			
+			<span class="refresh"> 
+				<a4j:commandLink id="refreshTasksPanel" action="#{caseTasksPanel.executeDefaultFilter()}"
+					oncomplete="EMF.ajaxloader.hideLoading('.case-tasks-panel-body');" 
+					onclick="EMF.ajaxloader.showLoading('.case-tasks-panel-body');"
+					styleClass="glyphicon glyphicon-refresh"
+					execute="@this" render="tasksList"> 
+				</a4j:commandLink>
+			</span>
+		</h:panelGroup>
+		
+		<div class="panel-body case-tasks-panel-body clearfix">
+			
+			<rich:list id="tasksList" value="#{caseTasksPanel.taskInstances}" var="taskInstance" type="unordered" rowClass="list-item">
+				<emf:treeHeader currentInstance="#{taskInstance}" mode="#{dashletsTreeHeaderMode}" 
+					display="#{(taskInstance.getParentElement() == null) ? 'current_only' : dashletsTreeHeaderDisplay}" size="#{dashletsTreeHeaderSize}" 
+					disableLinks="#{!entityPreviewAction.canOpenInstance(taskInstance)}">
+					<ui:define name="beforeContent">
+						<ui:include src="/common/banner.xhtml">
+							<ui:param name="renderIf" value="#{labelBuilder.isOverdueTask(taskInstance)}" />
+							<ui:param name="label" value="#{label['cmf.workflow.task.overdue.warning']}" />
+							<ui:param name="bannerClass" value="warning-banner" />
+						</ui:include>
+					</ui:define>
+				</emf:treeHeader>
+				<h:panelGroup styleClass="item-link-min" layout="block">
+					<ui:include src="/common/min-allowed-actions.xhtml">
+							<ui:param name="actionsList" value="#{caseTasksPanel.getTaskActions(taskInstance)}" />
+							<ui:param name="currentInstance" value="#{taskInstance}" />
+							<ui:param name="sectionInstance" value="#{sectionInstance}" />
+							<ui:param name="styleClass" value="horizontal-actions-view" />
+							<ui:param name="btnActionClass" value="drop-down-actions" />
+							<ui:param name="visibleActions" value="0" />
+							<ui:param name="ajaxLoaderRenderElement" value=".case-tasks-panel-body" />
+							<ui:param name="actionTooltip" value="#{label['cmf.btn.tooltip.actions']}" />
+					</ui:include>
+				</h:panelGroup>
+			</rich:list>
+		</div>
+		
+		<a4j:commandLink id="refreshCaseTasksDashlet" value="refreshCaseTasksDashlet" action="refreshCaseTasksDashlet" 
+			onclick="EMF.ajaxloader.showLoading('.case-tasks-panel-body');" 
+			oncomplete="EMF.ajaxloader.hideLoading('.case-tasks-panel-body');"
+			styleClass="load-case-tasks-link hide" 
+			render="tasksList, caseTasksPanelToolbar" execute="@this" />
+	</h:panelGroup>
+
+</ui:composition>

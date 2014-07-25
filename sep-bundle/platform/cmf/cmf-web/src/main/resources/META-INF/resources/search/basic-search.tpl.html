@@ -1,0 +1,57 @@
+<div class="basic-search-wrapper">
+	<div class="basic-search-criteria" id="basic-search">
+		<!-- style="display:none" have to stay here to prevent show empty drop down on first load.
+			 For some reasons it can not be made as css class. Just doesn't work -->
+		<span class="align-top object-type-wrapper">
+			<select data-name="objectType" class="object-type" multiple="multiple" data-placeholder="Object type"></select>
+		</span>
+		<span class="align-top object-relationship-wrapper">
+			<select data-name="objectRelationship" class="object-relationship" multiple="multiple" data-placeholder="Object relationship"></select>
+		</span>
+		<span class="align-top location-select-wrapper">
+			<select data-name="location" class="location-select" multiple="multiple" data-placeholder="Search context"></select>
+		</span>
+		
+		<select data-name="orderBy" class="order-by" style="display:none">
+			<option value="dcterms:title">Title</option>
+			<option selected="selected" value="emf:modifiedOn">Modified On</option>
+			<option value="emf:modifiedBy">Modified By</option>
+			<option value="emf:createdOn">Created On</option>
+			<option value="emf:createdBy">Created By</option>
+		</select>
+		<button data-name="orderDirection" class="btn btn-default order-direction" type="button">
+			<span class="glyphicon glyphicon-sort-by-alphabet hide"></span>
+			<span class="glyphicon glyphicon-sort-by-alphabet-alt"></span>
+		</button>
+		
+		<br/><br/>
+		
+		<input type="text" data-name="createdFromDate" class="created-from" placeholder="Create From" />
+		<input type="text" data-name="createdToDate" class="created-to" placeholder="Create To" />
+		<input type="text" data-name="createdBy" placeholder="Created By" class="created-by" />
+		<input type="text"  data-name="metaText" placeholder="Contains text" class="has-tooltip search-meta" />
+		<div class="tooltip">
+			A Single Term is a single word such as "test" or "hello".<br />
+			A Phrase is few words surrounded by double quotes such as "hello dolly".<br />
+			To perform a single character wildcard search use the "?" symbol.<br />
+			To perform a multiple character wildcard search use the "*" symbol.<br />
+			The OR operator is the default conjunction operator<br />
+			The AND operator matches documents where both terms exist anywhere in the text of a single document<br />
+			Boolean operators allow terms to be combined through logic operators. Lucene supports AND, "+", OR, NOT and "-" as Boolean operators.<br />
+			The search supports using parentheses to group clauses to form sub queries.
+		</div>
+		
+		<input id="basicSearchButton" type="button" class="search-btn btn btn-sm btn-primary standard-button" value="Search" />
+		<a class="switch" style="display: none;" href="#">Advanced</a>
+		<a class="reset-btn" href="javascript:void(0);">Reset</a>
+	</div>
+	<div id="advanced-search">
+		<input type="text" class="query-field ui-textfield" placeholder="Enter search query" />
+		<input id="basicSearchButton" type="button" class="search-btn btn btn-default standard-button" value="Search" />
+		<a class="switch" href="#">Basic</a>
+	</div>
+	<div class="basic-search-results-wrapper">
+		<div class="basic-search-results"></div>
+		<div class="basic-search-pagination"></div>
+	</div>
+</div>

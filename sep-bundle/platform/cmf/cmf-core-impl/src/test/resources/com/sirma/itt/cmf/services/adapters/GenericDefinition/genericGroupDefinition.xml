@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<definition id="groupDefinition" type="group">
+	<fields>
+		<field name="status" 		type="an..10" uri="emf:status" codelist="CL11" />
+	    <field name="createdOn" 	type="dateTime" label="groupDefinition.created-on" uri="emf:createdOn"/>
+	    <field name="createdBy" 	type="an..35" 	label="groupDefinition.created-from" uri="emf:createdBy"><control id="USER"/></field>
+	    <field name="modifiedOn"  	type="dateTime" label="groupDefinition.modified-on" uri="emf:modifiedOn"/>
+	    <field name="modifiedBy"    type="an..35" 	label="groupDefinition.modified-from" uri="emf:modifiedBy"><control id="USER"/></field>
+
+	    <field name="name" 			type="an..35" 	label="groupDefinition.name" uri="ptop:title" />
+	    <field name="avatar" 		type="an..200" 	label="groupDefinition.avatar" uri="emf:avatar" />
+	    <field name="email" 		type="an..35" 	label="groupDefinition.email" uri="emf:email" />
+	</fields>
+
+    <transitions>
+		<transition id="editDetails" label="groupDefinition.editDetails.btn.title" eventId="editDetails" purpose="action" />
+		<transition id="delete" label="groupDefinition.delete.btn.title" eventId="delete" purpose="action" immediate="true" confirmation="groupDefinition.confirm" />
+		<transition id="addUser" label="groupDefinition.addUser.btn.title" eventId="addUser" purpose="action" />
+		<transition id="removeUser" label="groupDefinition.removeUser.btn.title" eventId="removeUser" purpose="action" confirmation="group.removeUser" />
+	</transitions>
+
+	<stateTransitions>
+		<stateTransition from="*" transition="createGroup" to="IN_PROGRESS"/>
+
+		<stateTransition from="IN_PROGRESS" transition="editDetails" to="IN_PROGRESS"/>
+		<stateTransition from="IN_PROGRESS" transition="addUser" to="IN_PROGRESS"/>
+		<stateTransition from="IN_PROGRESS" transition="removeUser" to="IN_PROGRESS"/>
+		<stateTransition from="IN_PROGRESS" transition="delete" to="DELETED" />
+
+		<stateTransition from="*" transition="delete" to="DELETED" />
+	</stateTransitions>
+
+</definition>

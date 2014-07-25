@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<definition id="commentDefinition" type="comment">
+	<fields>
+	    <field name="createdOn" 	type="dateTime" label="comment.created-on" uri="emf:createdOn"/>
+	    <field name="createdBy" 	type="an..35" 	label="comment.created-from" uri="emf:createdBy"><control id="USER"/></field>
+	    <field name="modifiedOn"  	type="dateTime" label="comment.modified-on" uri="emf:modifiedOn"/>
+	    <field name="modifiedBy"    type="an..35" 	label="comment.modified-from" uri="emf:modifiedBy"><control id="USER"/></field>
+	    <field name="content"  		type="ANY" 		label="comment.content" uri="emf:content" />
+	    <field name="replyTo" 		type="an..100" 	label="comment.replyTo" uri="emf:replyTo"><control id="INSTANCE"/></field>
+	</fields>
+
+    <transitions>
+		<transition id="editDetails" label="commentDefinition.editDetails.btn.title" eventId="editDetails" purpose="action" />
+		<transition id="delete" label="commentDefinition.delete.btn.title" eventId="delete" purpose="action" immediate="true" confirmation="comment.confirm" />
+		<transition id="createComment" label="commentDefinition.createComment.btn.title" eventId="createComment" purpose="action"/>
+	</transitions>
+
+	<stateTransitions>
+		<stateTransition from="*" transition="createComment" to="IN_PROGRESS"/>
+
+		<stateTransition from="IN_PROGRESS" transition="editDetails" to="IN_PROGRESS"/>
+		<stateTransition from="IN_PROGRESS" transition="delete" to="DELETED" />
+
+		<stateTransition from="*" transition="delete" to="DELETED" />
+	</stateTransitions>
+</definition>

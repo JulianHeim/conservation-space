@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<div class="object-details">
+		<rich:panel id="newStandaloneTaskDataPanel" styleClass="dynamic-form-panel-wrapper standalonetask-details-panel">
+			<div class="item-selector-panel-wrapper standalonetask-type-toolbar #{standaloneTaskLandingPage.definitionSelectorVisiblityStyle()}">
+				<ui:include src="/common/select-one.xhtml">
+					<ui:param name="renderCondition" value="#{instanceUtil.isNotPersisted(standaloneTaskInstance)}" />
+					<ui:param name="selectorLabel" value="#{label['standalonetask.taskType.menu']}:" />
+					<ui:param name="activatorLinkValue" value="#{label['standalonetask.taskTypeMenu.defaultLabel']}" />
+					<ui:param name="itemsList" value="#{standaloneTaskLandingPage.definitionItems}" />
+					<ui:param name="action" value="#{standaloneTaskLandingPage}" />
+					<ui:param name="allowClear" value="false" />
+				</ui:include>
+			</div>
+	
+			<h:panelGroup id="standaloneTaskDetails" class="standalone-task-details" layout="block">
+	
+				<h:panelGroup id="instanceDataPanel" styleClass="dynamic-form-panel standalonetask-metadata-panel" />
+	
+				<ui:include src="/task/transition-actions.xhtml">
+					<ui:param name="transitionActions" value="#{standaloneTaskLandingPage.transitionActions}" />
+					<ui:param name="transitionExecutor" value="#{standaloneTaskTransitionExecutor}" />
+					<ui:param name="additionalStyleClass" value="standalone-task-transitions" />
+					<ui:param name="currentInstanceObject" value="#{standaloneTaskInstance}" />
+				</ui:include>
+	
+				<a4j:outputPanel id="buttonsPanel" ajaxRendered="true" layout="block" styleClass="cb"
+					rendered="#{standaloneTaskLandingPage.isEditMode(standaloneTaskInstance)}">
+					<div class="buttons-panel standalonetask-buttons">
+						<h:commandButton id="saveButton" action="#{standaloneTaskLandingPage.save(standaloneTaskInstance)}"
+							disabled="false" styleClass="btn btn-primary standard-button cmf-button blockUI"
+							value="#{(documentContext.selectedAction != null) ? ((documentContext.selectedAction.actionId == 'editDetails') ? label['cmf.btn.save'] : documentContext.selectedAction.label) : label['cmf.btn.save']}" />
+	
+						<h:commandButton id="cancelButtonId" action="#{standaloneTaskLandingPage.cancelEdit(standaloneTaskInstance)}"
+							styleClass="btn btn-default standard-button blockUI" value="#{label['cmf.btn.cancel']}" immediate="true" />
+					</div>
+				</a4j:outputPanel>
+	
+				<ui:repeat var="path" value="#{viewScope.basePaths}">
+					<script type="text/javascript">
+						#{viewScope[path]}
+					</script>
+				</ui:repeat>
+	
+				<script type="text/javascript">
+					CMF.utilityFunctions.initDynamicForm('standalonetask-metadata-panel');
+					EMF.onbeforeload.preventBeforeLoadMessage();
+				</script>
+			</h:panelGroup>
+		</rich:panel>
+
+		<ui:include src="includes/task-facets-panel.xhtml" />
+	</div>
+
+</ui:composition>

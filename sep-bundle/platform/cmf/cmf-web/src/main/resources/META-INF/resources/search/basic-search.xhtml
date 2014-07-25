@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich" xmlns:h="http://java.sun.com/jsf/html" template="/common/default-template.xhtml"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+	<ui:define name="contextData">
+		<div class="library-header">
+			<a id="libraryBookmarkLink" class="library-link" href="#">
+				<span class="library-icon icon sprite sprite-objectslibrary-icon-24"></span>
+				<span class="library-title" data-value=""></span>
+			</a>
+		</div>
+		<div class="button-bar">
+			<h:link id="createObjectButton" styleClass="btn btn-xs btn-primary create-object-button"
+				value="#{label['operation.object.create']}" outcome="object">
+				<f:param name="definitionType" value="#{objectsLibraryAction.definitionType}" />
+				<f:param name="autoselect" value="true" />
+			</h:link>
+
+			<div class="btn-group library-actions">
+				<button class="btn btn-default btn-xs" type="button" disabled="disabled">Actions</button>
+				<button data-toggle="dropdown tooltip" class="btn btn-default dropdown-toggle cmf-sep-actions" type="button">
+					<span class="caret"></span>
+					<span class="sr-only">Toggle Dropdown</span>
+				</button>
+				<ul class="hidden-actions dropdown-menu">
+					<!-- 				<li class="allowed-action-button"><a href="#" class="drop-down-actions"><span class="button-label">Delete</span></a></li>
+					<li class="allowed-action-button"><a href="#" class="drop-down-actions"><span class="button-label">Move</span></a></li> -->
+				</ul>
+			</div>
+		</div>
+	</ui:define>
+
+	<ui:define name="facets">
+		<div id="facets" class="search-facets"></div>
+	</ui:define>
+
+	<ui:define name="content">
+
+		<div class="content">
+			<div id="contentBody" class="basic-search-placeholder content-body"></div>
+		</div>
+
+		<script type="text/javascript">
+			$(function() {
+				var searchConfig = EMF.search.config(),
+					rootInstance = sessionStorage.getItem('emf.rootInstance'),
+					queryParameters = $.deparam(location.search.substr(1)) || {},
+					library = queryParameters['library'],
+					libraryTitle = queryParameters['libraryTitle'],
+					libraryLink = window.location.href,
+					objectType = queryParameters['objectType'];
+				// hide toolbar if not in library
+				if(!library || library !== 'object') {
+					$('.context-data-header').hide();
+				} else {
+					$('.library-title').attr('data-value', objectType).text(libraryTitle).parent().attr('href', libraryLink);
+					// project as context for basic search may be set and not cleared if we come to object library
+					// immediately after opening a project, then basic search and then some object library from the main menu 
+					CMF.utilityFunctions.clearRootInstance();
+				}
+
+				// Check if rootInstance exists in sessionStorage and consult backend if the instance
+				// is not in deleted state. If not, then use it as context instance in basic search
+				// !!! Identical code is used in jquery.emf-basic-search.js
+				if (rootInstance) {
+					var rootInstanceObject = JSON.parse(rootInstance);
+					$.ajax({
+						url : SF.config.contextPath + "/service/instances/status",
+						type: 'GET',
+						data: {
+							instanceId	: rootInstanceObject.id,
+							instanceType: rootInstanceObject.type
+						}
+					}).done(function(data) {
+						if(data) {
+							if(data.status !== 'DELETED') {
+								searchConfig.initialSearchArgs = {
+									location: [ rootInstanceObject.id ]
+								};
+							}
+						}
+					}).fail(function(data, textStatus, jqXHR) {
+						console.error(arguments);
+		            }).always(function() {
+						EMF.search.basic.init('.basic-search-placeholder', searchConfig);
+			        });
+				} else {
+					EMF.search.basic.init('.basic-search-placeholder', searchConfig);
+				}
+			});
+		</script>
+	</ui:define>
+
+</ui:composition>

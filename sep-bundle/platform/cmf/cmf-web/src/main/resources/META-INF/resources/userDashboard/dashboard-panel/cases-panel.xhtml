@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:emf="http://com.sirma.itt.emf"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<h:panelGroup id="myCasesPanel" styleClass="dashboard-panel cases-panel list-content" layout="block">
+
+		<div class="panel-header rf-p-hdr">
+			<span>#{label['cmf.user.dashboard.cases.panel.header']}</span>
+		</div>
+
+		<h:panelGroup id="myCasesPanelToolbar" styleClass="panel-toolbar">
+			<div class="item-selector-panel-wrapper dashboard-filters">
+				<ui:include src="/common/item-selector.xhtml">
+					<ui:param name="id" value="caseFilters" />
+					<ui:param name="listId" value="caseFiltersList" />
+					<ui:param name="activatorLinkValue" value="#{myCasesPanel.caseFilterActivatorLinkLabel}" />
+					<ui:param name="itemsList" value="#{myCasesPanel.caseFilters}" />
+					<ui:param name="action" value="#{myCasesPanel}" />
+					<ui:param name="ajaxLinks" value="true" />
+					<ui:param name="ajaxLoaderTarget" value=".case-list-panel-body" />
+					<ui:param name="renderId" value="caseList" />
+					<ui:param name="renderDescription" value="false" />
+					<ui:param name="activatorPrefix" value="myCases" />
+					<ui:param name="oncomplete" value="$('.load-cases-link').click()" />
+				</ui:include>
+			</div>
+			
+			<div class="item-selector-panel-wrapper dashboard-filters">
+				<ui:include src="/common/item-selector.xhtml">
+					<ui:param name="id" value="caseByDateFilters" />
+					<ui:param name="listId" value="caseByDateFiltersList" />
+					<ui:param name="renderCondition" value="true" />
+					<ui:param name="selectorLabel" value="" />
+					<ui:param name="activatorLinkValue" value="#{myCasesPanel.dateFilterActivatorLinkLabel}" />
+					<ui:param name="itemsList" value="#{myCasesPanel.dateFilters}" />
+					<ui:param name="action" value="#{myCasesPanel}" />
+					<ui:param name="ajaxLinks" value="true" />
+					<ui:param name="ajaxLoaderTarget" value=".case-list-panel-body" />
+					<ui:param name="renderId" value="caseList" />
+					<ui:param name="renderDescription" value="false" />
+					<ui:param name="activatorPrefix" value="myCasesTime" />
+					<ui:param name="oncomplete" value="$('.load-cases-link').click()" />
+				</ui:include>
+			</div>
+			
+			<a4j:commandLink id="newCaseButton" value="#{label['cmf.btn.newcase']}"
+				action="#{actionsManager.executeContextAction('createCase', 'user-dashboard')}"
+				rendered="#{myCasesPanel.moduleRestriction}" styleClass="icon-action-link blockUI">
+				<h:graphicImage value="../images/caseinstance-icon-16.png" />
+			</a4j:commandLink>
+			
+			<span class="refresh"> 
+				<a4j:commandLink id="refreshMyCasesPanel" action="#{myCasesPanel.executeDefaultFilter()}"
+					oncomplete="EMF.ajaxloader.hideLoading('.case-list-panel-body');" 
+					onclick="EMF.ajaxloader.showLoading('.case-list-panel-body');"
+					styleClass="glyphicon glyphicon-refresh"
+					render="caseList"> 
+				</a4j:commandLink>
+			</span>
+		</h:panelGroup>
+
+		<div class="panel-body case-list-panel-body">
+			<rich:list id="caseList" value="#{myCasesPanel.caseInstances}" var="caseInstance" type="unordered" rowClass="list-item">
+				<emf:treeHeader currentInstance="#{caseInstance}" mode="#{dashletsTreeHeaderMode}" reverseOrder="#{true}" 
+					display="#{dashletsTreeHeaderDisplay}" size="#{dashletsTreeHeaderSize}" disableLinks="#{!entityPreviewAction.canOpenInstance(caseInstance)}" />
+				<h:panelGroup styleClass="item-link-min" layout="block">
+					<ui:include src="/common/min-allowed-actions.xhtml">
+							<ui:param name="actionsList" value="#{myCasesPanel.getCaseActions(caseInstance)}" />
+							<ui:param name="currentInstance" value="#{caseInstance}" />
+							<ui:param name="sectionInstance" value="#{sectionInstance}" />
+							<ui:param name="styleClass" value="horizontal-actions-view" />
+							<ui:param name="btnActionClass" value="drop-down-actions" />
+							<ui:param name="visibleActions" value="0"/>
+							<ui:param name="actionTooltip" value="#{label['cmf.btn.tooltip.actions']}" />
+							<ui:param name="ajaxLoaderRenderElement" value=".case-list-panel-body" />
+					</ui:include>
+				</h:panelGroup>
+			</rich:list>
+		</div>
+
+		<a4j:commandLink id="refreshMyCasesDashlet" value="cases dashlet" action="refreshMyCasesDashlet"
+			onclick="EMF.ajaxloader.showLoading('.case-list-panel-body');" 
+			oncomplete="EMF.ajaxloader.hideLoading('.case-list-panel-body');"
+			styleClass="load-cases-link hide" 
+			render="caseList, myCasesPanelToolbar" 
+			execute="@this" />
+	</h:panelGroup>
+
+</ui:composition>

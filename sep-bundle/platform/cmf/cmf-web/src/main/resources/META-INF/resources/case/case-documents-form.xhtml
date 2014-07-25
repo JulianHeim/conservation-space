@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:emf="http://com.sirma.itt.emf">
+	
+	<rich:list id="caseDocumentSectionsList" value="#{sectionDocumentsAction.caseDocumentSections}" var="sectionInstance" 
+		type="unordered" styleClass="standard-list sections-list case-document-sections-list" rowClass="context sectioninstance clearfix">
+	
+		<div class="section-row #{sectionInstance.identifier} #{(sectionInstance.content.isEmpty()) ? '' : 'expanded'}">
+			<div class="section-togler"></div>
+			
+			<emf:treeHeader currentInstance="#{sectionInstance}" mode="compact_header" display="current_only" size="medium" />
+			
+			<emf:panel styleClass="case-section-actions allowed-actions-inline">
+				<ui:include src="/common/min-allowed-actions.xhtml">
+					<ui:param name="actionsList" value="#{actionsManager.getActions(sectionInstance, 'case-document-sections')}" />
+					<ui:param name="currentInstance" value="#{sectionInstance}" />
+					<ui:param name="visibleActions" value="0" />
+					<ui:param name="btnActionClass" value="drop-down-actions" />
+					<ui:param name="actionTitle" value="#{label['cmf.btn.actions']}" />
+				</ui:include>
+			</emf:panel>
+		</div>
+	
+		<rich:list id="sectionDocumentsList" value="#{sectionInstance.content}" var="documentInstance" 
+			type="unordered" styleClass="standard-list section-items-list section-documents-list" rowClass="child clearfix">
+			
+			<div class="data-column">
+				<emf:treeHeader currentInstance="#{documentInstance}" mode="default_header" display="current_only" size="bigger" 
+					disableLinks="#{!entityPreviewAction.canOpenInstance(caseInstance)}">
+					<ui:define name="beforeContent">
+						<ui:include src="/common/banner.xhtml">
+							<ui:param name="renderIf" value="#{documentInstance.isLocked()}" />
+							<ui:param name="label" value="#{labelBuilder.getDocumentIsLockedMessage(documentInstance)}" />
+							<ui:param name="bannerClass" value="info-banner" />
+						</ui:include>
+					</ui:define>
+				</emf:treeHeader>
+			</div>
+			
+			<div class="actions-column">
+				<ui:include src="/common/min-allowed-actions.xhtml">
+					<ui:param name="actionsList" value="#{actionsManager.getDocumentActions(documentInstance, 'case-documents-list')}" />
+					<ui:param name="currentInstance" value="#{documentInstance}" />
+					<ui:param name="sectionInstance" value="#{sectionInstance}" />
+					<ui:param name="btnActionClass" value="drop-down-actions" />
+					<ui:param name="visibleActions" value="0" />
+					<ui:param name="actionTooltip" value="#{label['cmf.btn.tooltip.actions']}" />
+				</ui:include>
+				
+			</div>
+			
+		</rich:list>
+	</rich:list>
+	
+</ui:composition>

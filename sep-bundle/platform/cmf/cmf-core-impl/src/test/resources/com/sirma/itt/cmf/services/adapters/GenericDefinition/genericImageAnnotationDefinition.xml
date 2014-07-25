@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<definition id="imageAnnotationDefinition" type="imageAnnotation">
+	<fields>
+	    <field name="createdOn" 	type="dateTime" label="comment.created-on" uri="emf:createdOn"/>
+	    <field name="createdBy" 	type="an..35" 	label="comment.created-from" uri="emf:createdBy"><control id="USER"/></field>
+	    <field name="modifiedOn"  	type="dateTime" label="comment.modified-on" uri="emf:modifiedOn"/>
+	    <field name="modifiedBy"    type="an..35" 	label="comment.modified-from" uri="emf:modifiedBy"><control id="USER"/></field>
+
+	    <field name="svgValue" 		type="an..35" 	label="comment.svgValue" uri="emf:svgValue" />
+	    <field name="zoomLevel" 	type="an..35" 	label="comment.zoomLevel" uri="emf:zoomLevel" />
+	    <field name="viewBox" 		type="an..35" 	label="comment.viewBox" uri="emf:viewBox" />
+	</fields>
+
+    <transitions>
+		<transition id="editDetails" label="imageAnnotationDefinition.editDetails.btn.title" eventId="editDetails" purpose="action" />
+		<transition id="delete" label="imageAnnotationDefinition.delete.btn.title" eventId="delete" purpose="action" immediate="true" confirmation="comment.confirm" />
+	</transitions>
+
+	<stateTransitions>
+		<stateTransition from="*" transition="addAnnotation" to="IN_PROGRESS"/>
+
+		<stateTransition from="IN_PROGRESS" transition="editDetails" to="IN_PROGRESS"/>
+		<stateTransition from="IN_PROGRESS" transition="delete" to="DELETED" />
+
+		<stateTransition from="*" transition="delete" to="DELETED" />
+	</stateTransitions>
+
+</definition>

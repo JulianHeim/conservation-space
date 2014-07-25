@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich" xmlns:a4j="http://richfaces.org/a4j" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:emf="http://com.sirma.itt.emf" xmlns:h="http://java.sun.com/jsf/html">
+
+	<h:panelGroup id="myDocumentsPanel" styleClass="dashboard-panel documents-panel list-content" layout="block">
+
+		<div class="panel-header rf-p-hdr">
+			<span>#{label['cmf.user.dashboard.documents.panel.header']}</span>
+		</div>
+
+		<h:panelGroup id="myDocumentsPanelToolbar" styleClass="panel-toolbar">
+			<div class="item-selector-panel-wrapper dashboard-filters">
+				<ui:include src="/common/item-selector.xhtml">
+					<ui:param name="id" value="documentFilters" />
+					<ui:param name="listId" value="documentFiltersList" />
+					<ui:param name="activatorLinkValue" value="#{myDocumentsPanel.documentFilterActivatorLinkLabel}" />
+					<ui:param name="itemsList" value="#{myDocumentsPanel.documentFilters}" />
+					<ui:param name="action" value="#{myDocumentsPanel}" />
+					<ui:param name="ajaxLinks" value="true" />
+					<ui:param name="ajaxLoaderTarget" value=".document-list-panel-body" />
+					<ui:param name="renderId" value="documentList" />
+					<ui:param name="renderDescription" value="false" />
+					<ui:param name="activatorPrefix" value="myDocuments" />
+					<ui:param name="oncomplete" value="$('.load-documents-link').click()" />
+				</ui:include>
+			</div>
+
+			<span class="refresh">
+				<a4j:commandLink id="refreshMyDocumentsPanel" action="#{myDocumentsPanel.executeDefaultFilter()}"
+					oncomplete="EMF.ajaxloader.hideLoading('.document-list-panel-body');"
+					onclick="EMF.ajaxloader.showLoading('.document-list-panel-body');" styleClass="glyphicon glyphicon-refresh"
+					render="documentList">
+				</a4j:commandLink>
+			</span>
+		</h:panelGroup>
+
+		<div class="panel-body document-list-panel-body">
+			<rich:list id="documentList" value="#{myDocumentsPanel.documents}" var="documentInstance" type="unordered" rowClass="list-item">
+				<emf:treeHeader currentInstance="#{documentInstance}" mode="#{dashletsTreeHeaderMode}"
+					display="#{dashletsTreeHeaderDisplay}" size="#{dashletsTreeHeaderSize}"
+					disableLinks="#{!entityPreviewAction.canOpenInstance(documentInstance)}">
+					<ui:define name="beforeContent">
+						<ui:include src="/common/banner.xhtml">
+							<ui:param name="renderIf" value="#{documentInstance.isLocked()}" />
+							<ui:param name="label" value="#{labelBuilder.getDocumentIsLockedMessage(documentInstance)}" />
+							<ui:param name="bannerClass" value="info-banner" />
+						</ui:include>
+					</ui:define>
+				</emf:treeHeader>
+				<div class="item-link-min">
+					<ui:include src="/common/min-allowed-actions.xhtml">
+						<ui:param name="actionsList" value="#{myDocumentsPanel.getDocumentActions(documentInstance)}" />
+						<ui:param name="currentInstance" value="#{documentInstance}" />
+						<ui:param name="styleClass" value="horizontal-actions-view" />
+						<ui:param name="btnActionClass" value="drop-down-actions" />
+						<ui:param name="visibleActions" value="0" />
+						<ui:param name="ajaxLoaderRenderElement" value=".document-list-panel-body" />
+						<ui:param name="actionTooltip" value="#{label['cmf.btn.tooltip.actions']}" />
+					</ui:include>
+				</div>
+			</rich:list>
+		</div>
+		<a4j:commandLink id="refreshMyDocumentsDashlet" value="documents dashlet" action="refreshMyDocumentsDashlet"
+			onclick="EMF.ajaxloader.showLoading('.document-list-panel-body');"
+			oncomplete="EMF.ajaxloader.hideLoading('.document-list-panel-body');" styleClass="load-documents-link hide"
+			render="documentList, myDocumentsPanelToolbar" execute="@this" />
+
+	</h:panelGroup>
+
+</ui:composition>

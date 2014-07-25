@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:rich="http://richfaces.org/rich">
+
+	<h:panelGroup rendered="#{not empty actionsList and not hidden}" layout="block">
+		<div>
+			<div class="btn-group allowed-action-image-button">
+				<h:panelGroup layout="block" rendered="#{actionTitle != null}">
+					<button class="btn btn-default btn-xs" type="button" disabled="disabled">#{actionTitle}</button>
+				</h:panelGroup>
+				<button data-toggle="dropdown tooltip" data-original-title="#{(actionTooltip != null) ? actionTooltip : ''}"
+					class="btn btn-default dropdown-toggle cmf-sep-actions" type="button">
+					<span class="caret"></span>
+					<span class="sr-only">Toggle Dropdown</span>
+				</button>
+				<rich:list id="hiddenActionsList" var="action" value="#{actionsList}" iterationStatusVar="items"
+					styleClass="hidden-actions dropdown-menu" rowClass="clearfix">
+					<ui:include src="/common/action-button-template.xhtml">
+						<ui:param name="onClickAttribute" value="#{actionsManager.calculateOnclickAttribute(action)}" />
+						<ui:param name="action" value="#{action}" />
+						<ui:param name="styleClass" value="#{styleClass}" />
+						<ui:param name="renderCondition" value="#{items.index ge visibleActions}" />
+						<ui:param name="isImmediate" value="#{(isImmediate != null) ? isImmediate : false}" />
+						<ui:param name="currentInstance" value="#{currentInstance}" />
+						<ui:param name="sectionInstance" value="#{sectionInstance}" />
+						<ui:param name="minActionsMode" value="#{minActionsMode}" />
+						<ui:param name="btnActionClass" value="#{btnActionClass}" />
+						<ui:remove>
+						<!-- <ui:param name="renderId" value="@form" />
+						<ui:param name="onBegin" value="EMF.blockUI.selectGUIBlocker('#{ajaxLoaderRenderElement}');" />
+						<ui:param name="onComplete" value="EMF.ajaxloader.hideLoading('#{ajaxLoaderRenderElement}');" /> -->
+						</ui:remove>
+					</ui:include>
+				</rich:list>
+			</div>
+		</div>
+	</h:panelGroup>
+</ui:composition>

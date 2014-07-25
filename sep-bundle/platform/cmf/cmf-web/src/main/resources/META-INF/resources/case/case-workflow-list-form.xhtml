@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html" xmlns:a4j="http://richfaces.org/a4j" xmlns:emf="http://com.sirma.itt.emf"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:rich="http://richfaces.org/rich">
+
+	<rich:list id="caseWorkflowsList" value="#{caseWorkflowListAction.workflowInstanceContexts}" var="workflowInstance"
+		type="unordered" styleClass="standard-list workflow-list">
+
+		<div class="data-column">
+			<emf:treeHeader currentInstance="#{workflowInstance}" mode="default_header" display="current_only" size="bigger"
+				disableLinks="false" />
+		</div>
+
+		<div class="actions-column">
+			<ui:include src="/common/min-allowed-actions.xhtml">
+				<ui:param name="actionsList" value="#{actionsManager.getDocumentActions(workflowInstance, 'case-workflow-list')}" />
+				<ui:param name="currentInstance" value="#{workflowInstance}" />
+				<ui:param name="visibleActions" value="0" />
+			</ui:include>
+		</div>
+	</rich:list>
+
+	<h:panelGroup id="noWorkflowsToDisplayMessage" styleClass="no-content-message" layout="block"
+		rendered="#{caseWorkflowListAction.workflowInstanceContexts.size() == 0}">
+		<span>#{label['cmf.workflow.history.noCotent.message']}</span>
+	</h:panelGroup>
+
+</ui:composition>

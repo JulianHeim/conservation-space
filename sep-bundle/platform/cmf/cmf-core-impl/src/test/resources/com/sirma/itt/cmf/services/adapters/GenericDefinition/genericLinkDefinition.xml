@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<definition id="linkDefinition" type="link">
+	<fields>
+	    <field name="status" 		type="an..10" uri="emf:status" codelist="CL11" />
+	    <field name="createdOn" 	type="dateTime" label="linkDefinition.created-on" uri="emf:createdOn"/>
+	    <field name="createdBy" 	type="an..35" 	label="linkDefinition.created-from" uri="emf:createdBy"><control id="USER"/></field>
+	    <field name="modifiedOn"  	type="dateTime" label="linkDefinition.modified-on" uri="emf:modifiedOn"/>
+	    <field name="modifiedBy"    type="an..35" 	label="linkDefinition.modified-from" uri="emf:modifiedBy"><control id="USER"/></field>
+	</fields>
+
+    <transitions>
+		<transition id="editDetails" label="linkDefinition.editDetails.btn.title" eventId="editDetails" purpose="action" />
+		<transition id="delete" label="linkDefinition.delete.btn.title" eventId="delete" purpose="action" immediate="true" confirmation="linkDefinition.confirm" />
+	</transitions>
+
+	<stateTransitions>
+		<stateTransition from="*" transition="createLink" to="IN_PROGRESS"/>
+
+		<stateTransition from="IN_PROGRESS" transition="editDetails" to="IN_PROGRESS"/>
+		<stateTransition from="IN_PROGRESS" transition="delete" to="DELETED" />
+
+		<stateTransition from="*" transition="delete" to="DELETED" />
+	</stateTransitions>
+
+</definition>

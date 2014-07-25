@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<definition id="userDefinition" type="user">
+	<fields>
+		<field name="status" 		type="an..10" uri="emf:status" codelist="CL11" />
+	    <field name="createdOn" 	type="dateTime" label="userDefinition.created-on" uri="emf:createdOn"/>
+	    <field name="createdBy" 	type="an..35" 	label="userDefinition.created-from" uri="emf:createdBy"><control id="USER"/></field>
+	    <field name="modifiedOn"  	type="dateTime" label="userDefinition.modified-on" uri="emf:modifiedOn"/>
+	    <field name="modifiedBy"    type="an..35" 	label="userDefinition.modified-from" uri="emf:modifiedBy"><control id="USER"/></field>
+
+
+	    <field name="firstName" 	type="an..35" 	label="userDefinition.firstName" uri="ptop:firstName" />
+	    <field name="lastName" 		type="an..35" 	label="userDefinition.lastName" uri="ptop:lastName"/>
+	    <field name="userId" 		type="an..35" 	label="userDefinition.userId" uri="ptop:title" />
+	    <field name="avatar" 		type="an..200" 	label="userDefinition.avatar" uri="emf:avatar" />
+	    <field name="email" 		type="an..50" 	label="userDefinition.email" uri="emf:email" />
+	    <field name="jobtitle" 		type="an..50" 	label="userDefinition.jobtitle" uri="ptop:hasPosition" />
+	</fields>
+
+    <transitions>
+		<transition id="editDetails" label="userDefinition.editDetails.btn.title" eventId="editDetails" purpose="action" />
+		<transition id="delete" label="userDefinition.delete.btn.title" eventId="delete" purpose="action" immediate="true" confirmation="userDefinition.confirm" />
+	</transitions>
+
+	<stateTransitions>
+		<stateTransition from="*" transition="createUser" to="IN_PROGRESS"/>
+
+		<stateTransition from="IN_PROGRESS" transition="editDetails" to="IN_PROGRESS"/>
+		<stateTransition from="IN_PROGRESS" transition="delete" to="DELETED" />
+
+		<stateTransition from="*" transition="delete" to="DELETED" />
+	</stateTransitions>
+
+</definition>
