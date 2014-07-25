@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:emf="http://com.sirma.itt.emf"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<h:panelGroup id="projectWorkflowsPanel" styleClass="dashboard-panel list-content project-workflows-panel" layout="block">
+
+		<div class="panel-header rf-p-hdr">
+			<span>#{label['cmf.workflow.panel.header.title']}</span>
+		</div>
+		
+		<h:panelGroup id="projectWorkflowsPanelToolbar" styleClass="panel-toolbar" layout="block">
+			<div class="item-selector-panel-wrapper dashboard-filters">
+				<ui:include src="/common/item-selector.xhtml">
+					<ui:param name="id" value="projectWorkflowFilters" />
+					<ui:param name="listId" value="projectWorkflowFiltersList" />
+					<ui:param name="activatorLinkValue" value="#{projectWorkflowsPanel.workflowActivatorLinkLabel}" />
+					<ui:param name="itemsList" value="#{projectWorkflowsPanel.projectWorkflowFilters}" />
+					<ui:param name="action" value="#{projectWorkflowsPanel}" />
+					<ui:param name="ajaxLinks" value="true" />
+					<ui:param name="ajaxLoaderTarget" value=".project-workflows-panel-body" />
+					<ui:param name="renderId" value="workflowList" />
+					<ui:param name="renderDescription" value="false" />
+					<ui:param name="activatorPrefix" value="projectWorkflows" />
+				</ui:include>
+			</div>
+			<span class="refresh"> 
+				<a4j:commandLink id="refreshProjectWorkflowsPanel" action="#{projectWorkflowsPanel.executeDefaultFilter()}"
+					oncomplete="EMF.ajaxloader.hideLoading('.project-workflows-panel-body');" 
+					onclick="EMF.ajaxloader.showLoading('.project-workflows-panel-body');"
+					styleClass="glyphicon glyphicon-refresh"
+					execute="@this" render="workflowList"> 
+				</a4j:commandLink>
+			</span>
+		</h:panelGroup>
+		
+		<div class="panel-body project-workflows-panel-body clearfix">
+			<rich:list id="workflowList" value="#{projectWorkflowsPanel.projectWorkflows}" var="workflowInstance" type="unordered"
+				styleClass="workflow-history-list" rowClass="list-item">
+				<emf:treeHeader currentInstance="#{workflowInstance}" mode="#{dashletsTreeHeaderMode}" 
+					display="current_only" size="#{dashletsTreeHeaderSize}" />
+				<div class="item-link-min">
+					<ui:include src="/common/min-allowed-actions.xhtml">
+							<ui:param name="actionsList" value="#{projectWorkflowsPanel.getWorkflowActions(workflowInstance)}" />
+							<ui:param name="currentInstance" value="#{workflowInstance}" />
+							<ui:param name="styleClass" value="horizontal-actions-view" />
+							<ui:param name="btnActionClass" value="drop-down-actions" />
+							<ui:param name="ajaxLoaderRenderElement" value=".project-workflows-panel-body" />
+							<ui:param name="visibleActions" value="0" />
+							<ui:param name="actionTooltip" value="#{label['cmf.btn.tooltip.actions']}" />
+					</ui:include>
+				</div>
+				<ui:include src="/workflow/includes/workflow-cancel-popup.xhtml">
+					<ui:param name="currentInstanceObject" value="#{workflowInstance}" />
+				</ui:include>
+			</rich:list>
+		</div>
+
+		<a4j:commandLink id="refreshProjectWorkflowsDashlet" value="refreshProjectWorkflowsDashlet" action="refreshProjectWorkflowsDashlet" 
+			onclick="EMF.ajaxloader.showLoading('.project-workflows-panel-body');" 
+			oncomplete="EMF.ajaxloader.hideLoading('.project-workflows-panel-body');"
+			styleClass="load-project-workflows-link hide" 
+			render="workflowList" execute="@this" />
+	</h:panelGroup>
+
+</ui:composition>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:emf="http://com.sirma.itt.emf"
+	xmlns:h="http://java.sun.com/jsf/html">
+	
+	<h:panelGroup id="projectDocumentsPanel" styleClass="dashboard-panel project-documents-panel list-content" layout="block">
+
+		<div class="panel-header rf-p-hdr">
+			<span>#{label['pm.project.dashboard.documents.panel.header']}</span>
+		</div>
+
+		<h:panelGroup id="projectDocumentsPanelToolbar" styleClass="panel-toolbar">
+			<span class="refresh"> 
+				<a4j:commandLink id="refreshProjectDocumentsPanel" action="#{projectsDocumentPanel.executeDefaultFilter()}"
+					oncomplete="EMF.ajaxloader.hideLoading('.project-document-list-panel-body');" 
+					onclick="EMF.ajaxloader.showLoading('.project-document-list-panel-body');"
+					styleClass="glyphicon glyphicon-refresh"
+					render="projectDocumentList"> 
+				</a4j:commandLink>
+			</span>
+		</h:panelGroup>
+
+		<div class="panel-body project-document-list-panel-body">
+			<rich:list id="projectDocumentList" value="#{projectsDocumentPanel.documentInstances}" var="documentInstance" type="unordered" rowClass="list-item">
+				<emf:treeHeader currentInstance="#{documentInstance}" mode="#{dashletsTreeHeaderMode}" 
+					display="#{dashletsTreeHeaderDisplay}" size="#{dashletsTreeHeaderSize}" 
+					disableLinks="#{!entityPreviewAction.canOpenInstance(documentInstance)}">
+					<ui:define name="beforeContent">
+						<ui:include src="/common/banner.xhtml">
+							<ui:param name="renderIf" value="#{documentInstance.properties['lockedBy'] != null}" />
+							<ui:param name="label" value="#{labelBuilder.getDocumentIsLockedMessage(documentInstance)}" />
+							<ui:param name="bannerClass" value="info-banner" />
+						</ui:include>
+					</ui:define>
+				</emf:treeHeader>
+				<h:panelGroup styleClass="item-link-min" layout="block">
+					<ui:include src="/common/min-allowed-actions.xhtml">
+							<ui:param name="actionsList" value="#{projectsDocumentPanel.getDocumentActions(documentInstance)}" />
+							<ui:param name="currentInstance" value="#{documentInstance}" />
+							<ui:param name="styleClass" value="horizontal-actions-view" />
+							<ui:param name="btnActionClass" value="drop-down-actions" />
+							<ui:param name="visibleActions" value="0" />
+							<ui:param name="ajaxLoaderRenderElement" value=".project-document-list-panel-body" />
+							<ui:param name="actionTooltip" value="#{label['cmf.btn.tooltip.actions']}" />
+					</ui:include>
+				</h:panelGroup>		
+			</rich:list>
+		</div>
+		
+		<a4j:commandLink id="initProjectDocumentsDashlet" value="initProjectDocumentsDashlet" action="initProjectDocumentsDashlet" 
+			onclick="EMF.ajaxloader.showLoading('.project-document-list-panel-body');" 
+			oncomplete="EMF.ajaxloader.hideLoading('.project-document-list-panel-body');"
+			styleClass="load-project-documents-link hide" render="projectDocumentList projectDocumentsPanelToolbar" execute="@this" />
+	</h:panelGroup>
+
+</ui:composition>

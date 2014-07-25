@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich" xmlns:a4j="http://richfaces.org/a4j" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:emf="http://com.sirma.itt.emf" xmlns:h="http://java.sun.com/jsf/html">
+
+	<h:panelGroup id="myProjectsPanel" styleClass="dashboard-panel projects-panel list-content" layout="block">
+
+		<div class="panel-header rf-p-hdr">
+			<span>#{label['pm.user.dashboard.projects.panel.header']}</span>
+		</div>
+
+		<h:panelGroup id="myProjectsPanelToolbar" styleClass="panel-toolbar" layout="block">
+			<div class="item-selector-panel-wrapper dashboard-filters">
+				<ui:include src="/common/item-selector.xhtml">
+					<ui:param name="id" value="projectFilters" />
+					<ui:param name="listId" value="projectFilterList" />
+					<ui:param name="activatorLinkValue" value="#{myProjectsPanel.projectActivatorLinkLabel}" />
+					<ui:param name="itemsList" value="#{myProjectsPanel.projectFilter}" />
+					<ui:param name="action" value="#{myProjectsPanel}" />
+					<ui:param name="ajaxLinks" value="true" />
+					<ui:param name="ajaxLoaderTarget" value=".project-list-panel-body" />
+					<ui:param name="renderId" value="projectsList" />
+					<ui:param name="renderDescription" value="false" />
+					<ui:param name="activatorPrefix" value="myProjectsPanel" />
+					<ui:param name="oncomplete" value="$('.load-projects-link').click()" />
+				</ui:include>
+			</div>
+
+			<div class="allowed-actions-inline" id="myProjectsPanelToolbarActions">
+				<div>
+					<div class="btn-group allowed-action-image-button">
+						<button disabled="disabled" type="button" class="btn btn-default btn-xs">#{label['cmf.btn.actions']}</button>
+						<button type="button" class="btn btn-default dropdown-toggle cmf-sep-actions" data-toggle="dropdown tooltip">
+							<span class="caret"></span>
+							<span class="sr-only">Toggle Dropdown</span>
+						</button>
+						<ul id="projectDashletHiddenActionsList" class="hidden-actions dropdown-menu rf-ulst">
+							<li class="">
+								<a4j:commandLink id="newProjectButton"
+									action="#{actionsManager.executeContextAction('createProject', 'projectinstance')}"
+									value="#{label['pm.menu.new-project']}" styleClass="drop-down-actions createProject blockUI">
+									<div class="tooltip">
+										<span>#{label['pm.menu.new-project']}</span>
+									</div>
+								</a4j:commandLink>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<span class="btn btn-default btn-sm glyphicon glyphicon-search">
+				<h:commandLink id="listProjects" action="#{myProjectsPanel.searchProjects()}" value="#{label['pm.menu.list-projects']}"
+					styleClass="browse-projects-link blockUI" />
+			</span>
+			<span class="refresh">
+				<a4j:commandLink id="refreshMyProjectsPanel" action="#{myProjectsPanel.executeDefaultFilter()}"
+					oncomplete="EMF.ajaxloader.hideLoading('.project-list-panel-body');"
+					onclick="EMF.ajaxloader.showLoading('.project-list-panel-body');" styleClass="glyphicon glyphicon-refresh"
+					render="projectsList">
+				</a4j:commandLink>
+			</span>
+		</h:panelGroup>
+
+		<div class="panel-body project-list-panel-body">
+			<rich:list id="projectsList" value="#{myProjectsPanel.projectInstancesList}" var="projectInstance" type="unordered"
+				styleClass="project-lists" rowClass="list-item">
+
+				<emf:treeHeader currentInstance="#{projectInstance}" mode="#{dashletsTreeHeaderMode}"
+					display="#{dashletsTreeHeaderDisplay}" size="#{dashletsTreeHeaderSize}"
+					disableLinks="#{!entityPreviewAction.canOpenProject(projectInstance)}" />
+
+				<div class="item-link-min">
+					<ui:include src="/common/min-allowed-actions.xhtml">
+						<ui:param name="actionsList" value="#{myProjectsPanel.getActionsForInstance(projectInstance)}" />
+						<ui:param name="currentInstance" value="#{projectInstance}" />
+						<ui:param name="sectionInstance" value="#{sectionInstance}" />
+						<ui:param name="btnActionClass" value="drop-down-actions" />
+						<ui:param name="ajaxLoaderRenderElement" value=".project-list-panel-body" />
+						<ui:param name="actionTooltip" value="#{label['cmf.btn.tooltip.actions']}" />
+						<ui:param name="visibleActions" value="0" />
+					</ui:include>
+				</div>
+			</rich:list>
+		</div>
+
+		<a4j:commandLink id="refreshMyProjectsDashlet" value="projects dashlet" action="refreshMyProjectsDashlet"
+			onclick="EMF.ajaxloader.showLoading('.project-list-panel-body');"
+			oncomplete="EMF.ajaxloader.hideLoading('.project-list-panel-body');" styleClass="load-projects-link hide"
+			render="projectsList, myProjectsPanelToolbar" execute="@this" />
+	</h:panelGroup>
+
+</ui:composition>

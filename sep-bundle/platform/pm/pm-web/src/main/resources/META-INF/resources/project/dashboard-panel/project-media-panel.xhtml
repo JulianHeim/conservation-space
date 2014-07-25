@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:emf="http://com.sirma.itt.emf"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<h:panelGroup id="projectMediaPanel" styleClass="dashboard-panel media-panel list-content" layout="block">
+
+		<div class="panel-header rf-p-hdr">
+			<span>#{label['pm.user.dashboard.media.panel.header']}</span>
+		</div>
+
+		<h:panelGroup id="projectMediaPanelToolbar" styleClass="panel-toolbar media-dashlet">
+			
+			<span class="refresh"> 
+				<a4j:commandLink id="refreshProjectMediaPanel" action="#{projectMediaPanel.executeDefaultFilter()}"
+					oncomplete="EMF.ajaxloader.hideLoading('.project-media-list-panel-body');" 
+					onclick="EMF.ajaxloader.showLoading('.project-media-list-panel-body');"
+					styleClass="glyphicon glyphicon-refresh"
+					render="projectMediaList"> 
+				</a4j:commandLink>
+			</span>
+		</h:panelGroup>
+
+		<div class="panel-body project-media-list-panel-body tree-header-wrapper">
+				<rich:list id="projectMediaList" value="#{projectMediaPanel.documentInstance}" style="border:none !important;" var="documentInstance" type="unordered" rowClass="list-item">
+					<emf:treeHeader currentInstance="#{documentInstance}" renderThumbnail="true" mode="#{dashletsTreeHeaderMode}" display="#{dashletsTreeHeaderDisplay}" size="#{dashletsTreeHeaderSize}"/>
+					<div class="item-link-min">
+						<ui:include src="/common/min-allowed-actions.xhtml">
+							<ui:param name="actionsList" value="#{projectMediaPanel.getMediaActions(documentInstance)}" />
+							<ui:param name="currentInstance" value="#{documentInstance}" />
+							<ui:param name="styleClass" value="horizontal-actions-view" />
+							<ui:param name="btnActionClass" value="drop-down-actions" />
+							<ui:param name="visibleActions" value="0" />
+							<ui:param name="ajaxLoaderRenderElement" value=".project-media-list-panel-body" />
+							<ui:param name="actionTooltip" value="#{label['cmf.btn.tooltip.actions']}" />
+						</ui:include>
+					</div>
+				</rich:list>
+		</div>
+		
+		<a4j:commandLink id="refreshProjectMediaDashlet" value="media dashlet" action="refreshProjectMediaDashlet"
+			onclick="EMF.ajaxloader.showLoading('.project-media-list-panel-body');" 
+			oncomplete="EMF.ajaxloader.hideLoading('.project-media-list-panel-body');"
+			styleClass="load-media-link hide" 
+			render="projectMediaList, projectMediaPanelToolbar" 
+			execute="@this" />
+	</h:panelGroup>
+
+</ui:composition>

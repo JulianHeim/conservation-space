@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:emf="http://com.sirma.itt.emf"
+	xmlns:h="http://java.sun.com/jsf/html">
+	
+	<h:panelGroup id="projectCasePanel" rendered="true" styleClass="dashboard-panel list-content" layout="block">
+		
+		<div class="panel-header rf-p-hdr">
+			<span>#{label['pm.project.dashboard.panel.cases']}</span>
+		</div>
+		
+		<h:panelGroup id="projectCasesPanelToolbar" styleClass="panel-toolbar">
+		<div class="filter-group">
+			<div class="item-selector-panel-wrapper dashboard-filters">
+				<ui:include src="/common/item-selector.xhtml">
+					<ui:param name="id" value="projectsCaseFilter" />
+					<ui:param name="listId" value="projectsCaseFilterList" />
+					<ui:param name="activatorLinkValue" value="#{projectCasePanel.caseActivatorLinkLabel}" />
+					<ui:param name="itemsList" value="#{projectCasePanel.projectCaseFilters}" />
+					<ui:param name="action" value="#{projectCasePanel}" />
+					<ui:param name="ajaxLinks" value="true" />
+					<ui:param name="ajaxLoaderTarget" value=".project-cases-panel-body" />
+					<ui:param name="renderId" value="caseList" />
+					<ui:param name="renderDescription" value="false" />
+					<ui:param name="activatorPrefix" value="projectCasePanel" />
+					<ui:param name="oncomplete" value="$('.load-project-cases-link').click()" />
+				</ui:include>
+			</div>
+			
+			<div class="item-selector-panel-wrapper dashboard-filters">
+				<ui:include src="/common/item-selector.xhtml">
+					<ui:param name="id" value="projectsDateFilter" />
+					<ui:param name="listId" value="projectsDateFilterList" />
+					<ui:param name="activatorLinkValue" value="#{projectCasePanel.dateActivatorLinkLabel}" />
+					<ui:param name="itemsList" value="#{projectCasePanel.projectDateFilters}" />
+					<ui:param name="action" value="#{projectCasePanel}" />
+					<ui:param name="ajaxLinks" value="true" />
+					<ui:param name="ajaxLoaderTarget" value=".project-cases-panel-body" />
+					<ui:param name="renderId" value="caseList" />
+					<ui:param name="renderDescription" value="false" />
+					<ui:param name="activatorPrefix" value="projectCasePanel" />
+					<ui:param name="oncomplete" value="$('.load-project-cases-link').click()" />
+				</ui:include>
+			</div>
+			</div>
+			<emf:panel id="projectCasesToolbarActions" styleClass="allowed-actions-inline blockUI">
+				<ui:include src="/common/min-allowed-actions.xhtml">
+					<ui:param name="actionsList" value="#{projectCasePanel.dashletActions}" />
+					<ui:param name="currentInstance" value="#{projectInstance}" />
+					<ui:param name="visibleActions" value="0" />
+					<ui:param name="btnActionClass" value="drop-down-actions" />
+					<ui:param name="actionTitle" value="#{label['cmf.btn.actions']}" />
+				</ui:include>
+			</emf:panel>
+			
+			<span class="refresh"> 
+				<a4j:commandLink id="refreshProjectCasesPanel" action="#{projectCasePanel.executeDefaultFilter()}"
+					oncomplete="EMF.ajaxloader.hideLoading('.project-cases-panel-body');" 
+					onclick="EMF.ajaxloader.showLoading('.project-cases-panel-body');"
+					styleClass="glyphicon glyphicon-refresh"
+					render="caseList"> 
+				</a4j:commandLink>
+			</span>
+		</h:panelGroup>
+		 
+		<div class="panel-body project-cases-panel-body">
+			<rich:list id="caseList" value="#{projectCasePanel.projectCasesList}" var="caseInstance" type="unordered" rowClass="list-item">
+			
+				<emf:treeHeader currentInstance="#{caseInstance}" mode="#{dashletsTreeHeaderMode}" 
+					display="#{dashletsTreeHeaderDisplay}" size="#{dashletsTreeHeaderSize}" disableLinks="#{!entityPreviewAction.canOpenInstance(caseInstance)}" />
+					
+				<h:panelGroup styleClass="item-link-min" layout="block">
+					<ui:include src="/common/min-allowed-actions.xhtml">
+							<ui:param name="actionsList" value="#{projectCasePanel.getCaseRecordActions(caseInstance)}" />
+							<ui:param name="currentInstance" value="#{caseInstance}" />
+							<ui:param name="sectionInstance" value="#{sectionInstance}" />
+							<ui:param name="styleClass" value="horizontal-actions-view" />
+							<ui:param name="btnActionClass" value="drop-down-actions" />
+							<ui:param name="visibleActions" value="0" />
+							<ui:param name="ajaxLoaderRenderElement" value=".project-cases-panel-body" />
+							<ui:param name="actionTooltip" value="#{label['cmf.btn.tooltip.actions']}" />
+					</ui:include>
+				</h:panelGroup>		
+			</rich:list>
+		</div>
+		
+		<a4j:commandLink id="initProjectCasesDashlet" value="initProjectCasesDashlet" action="initProjectCasesDashlet" 
+			onclick="EMF.ajaxloader.showLoading('.project-cases-panel-body');" 
+			oncomplete="EMF.ajaxloader.hideLoading('.project-cases-panel-body');"
+			styleClass="load-project-cases-link hide" 
+			render="caseList, projectCasesPanelToolbar" execute="@this" />
+	</h:panelGroup>
+
+</ui:composition>
