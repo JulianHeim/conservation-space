@@ -1,0 +1,539 @@
+@prefix : <http://www.sirma.com/ontologies/2014/03/eQMS#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix emf: <http://ittruse.ittbg.com/ontology/enterpriseManagementFramework#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix eqms: <http://www.sirma.com/ontologies/2014/03/eQMS#> .
+@prefix ptop: <http://www.ontotext.com/proton/protontop#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@base <http://www.sirma.com/ontologies/2014/03/eQMS> .
+
+<http://www.sirma.com/ontologies/2014/03/eQMS> rdf:type owl:Ontology ;
+                                               
+                                               rdfs:label "eQMS Ontology"@en ;
+                                               
+                                               dc:subject "eQMS Ontology"@en ;
+                                               
+                                               skos:definition "eQMS Ontology"@en ;
+                                               
+                                               owl:versionInfo "v 0.1" ;
+                                               
+                                               dcterms:creator "Maria Todorova" ;
+                                               
+                                               owl:imports <http://ittruse.ittbg.com/ontology/enterpriseManagementFramework> .
+
+
+#################################################################
+#
+#    Annotation properties
+#
+#################################################################
+
+
+###  http://purl.org/dc/terms/creator
+
+dcterms:creator rdf:type owl:AnnotationProperty .
+
+
+
+
+
+#################################################################
+#
+#    Object Properties
+#
+#################################################################
+
+
+###  http://www.sirma.com/ontologies/2014/03/eQMS#feedbackOn
+
+:feedbackOn rdf:type owl:ObjectProperty ;
+            
+            rdfs:label "Feedback On" ;
+            
+            dc:creator "Maria Todorova" ;
+            
+            skos:definition "Each customer feedback is related to process instance or a product." ;
+            
+            rdfs:domain :CustomerFeedback ;
+            
+            rdfs:range :QMSProcessInstance ;
+            
+            owl:inverseOf :hasFeedback .
+
+
+
+###  http://www.sirma.com/ontologies/2014/03/eQMS#hasDepartment
+
+:hasDepartment rdf:type owl:ObjectProperty ;
+               
+               rdfs:label "Has Department"@en ;
+               
+               skos:definition "Department is a separate part, division, or branch, as of a government, business, or school"@en ;
+               
+               dcterms:creator "Lidiya Dimitrova"@en ;
+               
+               rdfs:domain emf:Company ;
+               
+               rdfs:range emf:Department .
+
+
+
+###  http://www.sirma.com/ontologies/2014/03/eQMS#hasFeedback
+
+:hasFeedback rdf:type owl:ObjectProperty ;
+             
+             rdfs:label "Has Feedback" ;
+             
+             skos:definition "Each customer feedback is related to process instance or a product." ;
+             
+             dc:creator "Maria Todorova" ;
+             
+             rdfs:range :CustomerFeedback ;
+             
+             rdfs:domain :QMSProcessInstance .
+
+
+
+###  http://www.sirma.com/ontologies/2014/03/eQMS#hasFinding
+
+:hasFinding rdf:type owl:ObjectProperty ;
+            
+            rdfs:label "Has Finding" ;
+            
+            dc:creator "Maria Todorova" ;
+            
+            skos:definition """An object could be related with a finding.
+
+For customer feedback these will be the findings raised by the feedback.
+For a QMS process these will be the findings raised during the continues improvement process through the internal audits, management recommedations, etc. """ ;
+            
+            rdfs:domain ptop:Document ,
+                        :CustomerFeedback ;
+            
+            rdfs:range :Finding ;
+            
+            rdfs:domain :QMSProcess ,
+                        :QualityObjective ;
+            
+            rdfs:subPropertyOf owl:topObjectProperty .
+
+
+
+###  http://www.sirma.com/ontologies/2014/03/eQMS#hasInstance
+
+:hasInstance rdf:type owl:ObjectProperty ;
+             
+             rdfs:label "Has Instance"@en ;
+             
+             dc:creator "Maria Todorova" ;
+             
+             skos:definition """A QMS Process in an Organization has one or more instances.
+
+For example if we have a QMS process Internal Audit (describig the step by step procedure to be folloed, templates to be used, etc.), then the Instance of the process is every internal audit performed in the organization""" ;
+             
+             rdfs:domain :QMSProcess ;
+             
+             rdfs:range :QMSProcessInstance ;
+             
+             owl:inverseOf :isInstanceOf .
+
+
+
+###  http://www.sirma.com/ontologies/2014/03/eQMS#hasObjective
+
+:hasObjective rdf:type owl:ObjectProperty ;
+              
+              rdfs:label "Has objective"@en ;
+              
+              dcterms:creator "Maria Todorova" ;
+              
+              skos:definition "Qulity objectives are measurable goals that are related to the processes in the organization and to effective product realization."@en ;
+              
+              rdfs:domain :QMSProcess ,
+                          :QMSProcessInstance ;
+              
+              rdfs:range :QualityObjective .
+
+
+
+###  http://www.sirma.com/ontologies/2014/03/eQMS#isDepartmentOf
+
+:isDepartmentOf rdf:type owl:ObjectProperty ;
+                
+                rdfs:label "Is Department Of"@en ;
+                
+                dcterms:creator "Lidiya Dimitrova" ;
+                
+                skos:definition "Department is a separate part, division, or branch, as of a government, business, or school"@en ;
+                
+                rdfs:range emf:Company ;
+                
+                rdfs:domain emf:Department ;
+                
+                owl:inverseOf :hasDepartment .
+
+
+
+###  http://www.sirma.com/ontologies/2014/03/eQMS#isFindingFor
+
+:isFindingFor rdf:type owl:ObjectProperty ;
+              
+              rdfs:label "Is Finding For" ;
+              
+              skos:definition """An object could be related with a finding.
+
+For customer feedback these will be the findings raised by the feedback.
+For a QMS process these will be the findings raised during the continues improvement process through the internal audits, management recommedations, etc. """ ;
+              
+              dc:creator "Maria Todorova" ;
+              
+              rdfs:range ptop:Document ,
+                         :CustomerFeedback ;
+              
+              rdfs:domain :Finding ;
+              
+              rdfs:range :QMSProcess ,
+                         :QualityObjective ;
+              
+              owl:inverseOf :hasFinding .
+
+
+
+###  http://www.sirma.com/ontologies/2014/03/eQMS#isInstanceOf
+
+:isInstanceOf rdf:type owl:ObjectProperty ;
+              
+              rdfs:label "Is Instance Of"@en ;
+              
+              skos:definition "Each QMS process has one or more ìnstances" ;
+              
+              dc:creator "Maria Todorova" ;
+              
+              rdfs:range :QMSProcess ;
+              
+              rdfs:domain :QMSProcessInstance .
+
+
+
+###  http://www.sirma.com/ontologies/2014/03/eQMS#isObjectiveOf
+
+:isObjectiveOf rdf:type owl:ObjectProperty ;
+               
+               rdfs:label "Is Objective Of" ;
+               
+               dc:creator "Maria Todorova" ;
+               
+               skos:definition "Qulity objectives are measurable goals that are related to the processes in the organization and to effective product realization." ;
+               
+               rdfs:range :QMSProcess ,
+                          :QMSProcessInstance ;
+               
+               rdfs:domain :QualityObjective ;
+               
+               owl:inverseOf :hasObjective .
+
+
+
+###  http://www.sirma.com/ontologies/2014/03/eQMS#raises
+
+:raises rdf:type owl:ObjectProperty ;
+        
+        rdfs:label "Raises" ;
+        
+        skos:definition "gives information for the activity started on the object" ;
+        
+        dc:creator "Maria Todorova" ;
+        
+        rdfs:range emf:Activity ;
+        
+        rdfs:domain :eQMSObject .
+
+
+
+###  http://www.sirma.com/ontologies/2014/03/eQMS#relatesToQMSProcess
+
+:relatesToQMSProcess rdf:type owl:ObjectProperty ;
+                     
+                     rdfs:label "Relates to QMS Process" ;
+                     
+                     skos:definition """A QMS process relates (interacts) to one or more QMS processes:
+- by receiving as input artefacts created by anoter process
+- by sending output artefacts generated in the process as input artefact to other processes""" ;
+                     
+                     dc:creator "Maria Todorova" ;
+                     
+                     rdfs:subPropertyOf emf:isRelatedTo ;
+                     
+                     rdfs:range :QMSProcess ;
+                     
+                     rdfs:domain :QMSProcess .
+
+
+
+
+
+#################################################################
+#
+#    Data properties
+#
+#################################################################
+
+
+###  http://www.sirma.com/ontologies/2014/03/eQMS#inOperationFrom
+
+:inOperationFrom rdf:type owl:DatatypeProperty ;
+                 
+                 rdfs:label "In Operation from" ;
+                 
+                 emf:isSearchable "true"^^xsd:boolean ;
+                 
+                 dc:creator "Maria Todorova" ;
+                 
+                 skos:definition "The Date from which a QMS process is in operation in the Organization" ;
+                 
+                 rdfs:domain :QMSProcess ;
+                 
+                 rdfs:range xsd:dateTime .
+
+
+
+###  http://www.sirma.com/ontologies/2014/03/eQMS#inOperationTo
+
+:inOperationTo rdf:type owl:DatatypeProperty ;
+               
+               rdfs:label "In Operation to" ;
+               
+               emf:isSearchable "true"^^xsd:boolean ;
+               
+               skos:definition "The Date till which a QMS process is in operation in the Organization" ;
+               
+               dc:creator "Maria Todorova" ;
+               
+               rdfs:domain :QMSProcess ;
+               
+               rdfs:range xsd:dateTime .
+
+
+
+
+
+#################################################################
+#
+#    Classes
+#
+#################################################################
+
+
+###  http://www.sirma.com/ontologies/2014/03/eQMS#Conformity
+
+:Conformity rdf:type owl:Class ;
+            
+            rdfs:label "Conformity"@en ;
+            
+            rdfs:subClassOf :Finding ;
+            
+            emf:isSearchable "true"^^xsd:boolean ;
+            
+            emf:canCreateInstance "true"^^xsd:boolean ;
+            
+            skos:definition """Action in accord with prevailing QMS process and obejctives
+
+
+""" ;
+            
+            dc:creator "Maria Todorova" .
+
+
+
+###  http://www.sirma.com/ontologies/2014/03/eQMS#CustomerFeedback
+
+:CustomerFeedback rdf:type owl:Class ;
+                  
+                  rdfs:label "Customer Feedback"@en ;
+                  
+                  rdfs:subClassOf ptop:InformationResource ,
+                                  :eQMSObject ;
+                  
+                  emf:canCreateInstance "true"^^xsd:boolean ;
+                  
+                  emf:isSearchable "true"^^xsd:boolean ;
+                  
+                  skos:definition """Customer feedback is helpful information or criticism that is given to the organization from its customers to say what can be done to improve a performance, product, etc.
+The customer feedback can be received through different channels - telephone calls, e-mails, surveys, questionaries, etc.""" .
+
+
+
+###  http://www.sirma.com/ontologies/2014/03/eQMS#Finding
+
+:Finding rdf:type owl:Class ;
+         
+         rdfs:label "Finding"@en ;
+         
+         rdfs:subClassOf ptop:InformationResource ,
+                         :eQMSObject ;
+         
+         emf:canCreateInstance "false"^^xsd:boolean ;
+         
+         emf:isSearchable "false"^^xsd:boolean ;
+         
+         skos:definition """Finding is the results of an investigation.
+
+The finding could be a result from Internal audit process, from a managament review process, to be raised from a customer feedback, or from employee recommendation, etc.
+
+Different types of findings could exist - process improvement recommendation, conformity with a QMS process and obejctives, non-conformity with a QMS process and quality objectives.
+
+A customer feedback after beening registered in the system must be reviewed and after that if necessary will become (will raise) finding of specific type. Not all feedbacks are fidings, but based on the analyses of 1 or more feedbacks a single finding could be raised.
+
+The findings themselves could raise (or not) corrective and/ or preventive actions.
+
+
+
+""" ;
+         
+         dc:creator "Maria Todorova" .
+
+
+
+###  http://www.sirma.com/ontologies/2014/03/eQMS#NonConformity
+
+:NonConformity rdf:type owl:Class ;
+               
+               rdfs:label "Non-conformity"@en ;
+               
+               rdfs:subClassOf :Finding ;
+               
+               emf:canCreateInstance "true"^^xsd:boolean ;
+               
+               emf:isSearchable "true"^^xsd:boolean ;
+               
+               skos:definition """Failure or refusal to conform with established QMS process and obejctives
+
+
+""" ;
+               
+               dc:creator "Maria Todorova" .
+
+
+
+###  http://www.sirma.com/ontologies/2014/03/eQMS#QMSProcess
+
+:QMSProcess rdf:type owl:Class ;
+            
+            rdfs:label "QMS Process"@en ;
+            
+            rdfs:subClassOf :eQMSObject ;
+            
+            emf:canCreateInstance "true"^^xsd:boolean ;
+            
+            emf:isSearchable "true"^^xsd:boolean ;
+            
+            skos:definition """Process is a usually fixed or ordered series of actions or events leading to a result.
+
+A QMS process is an element of an organizational QMS. The ISO9001:2000 standard requires organizations seeking compliance or certification to define the processes which form the QMS and the sequence and interaction of these processes. 
+
+Examples of such processes include:
+
+    Order Processing
+    Production Planning
+    Calibration
+    Internal Audit
+    Corrective Action
+    Preventive Action
+    Purchasing and related processes such as supplier selection and monitoring
+
+ISO9001 requires that the performance of these processes be measured, analysed and continually improved, and the results of this form an input into the management review process.""" .
+
+
+
+###  http://www.sirma.com/ontologies/2014/03/eQMS#QMSProcessInstance
+
+:QMSProcessInstance rdf:type owl:Class ;
+                    
+                    rdfs:label "QMS Process Instance"@en ;
+                    
+                    rdfs:subClassOf :eQMSObject ;
+                    
+                    emf:canCreateInstance "true"^^xsd:boolean ;
+                    
+                    emf:isSearchable "true"^^xsd:boolean ;
+                    
+                    skos:definition """A process instance is the instantiation of a QMS process. 
+
+Examples of such processes include:
+
+For example if we have a QMS process Internal Audit (describig the step by step procedure to be folloed, templates to be used, etc.), then the Instance of the process is every internal audit performed in the organization """ .
+
+
+
+###  http://www.sirma.com/ontologies/2014/03/eQMS#QualityObjective
+
+:QualityObjective rdf:type owl:Class ;
+                  
+                  rdfs:label "Quality Objective" ;
+                  
+                  rdfs:subClassOf :eQMSObject ;
+                  
+                  emf:isSearchable "true"^^xsd:boolean ;
+                  
+                  skos:definition """Qulity objectives are measurable goals that relate to the organization's commitment to quality. 
+Objectives can address wide range of topics - product performance, process preformance, customer satisfaction, workplace safety, financial results, cost reduction, etc.
+
+Different names of the term \"quality objective\" could be used in diferent organizations: business objectives, scorecard goals, key measures, performance targets, key preformance indicators.""" ;
+                  
+                  dc:creator "Maria Todorova" .
+
+
+
+###  http://www.sirma.com/ontologies/2014/03/eQMS#RecomendationForImprovement
+
+:RecomendationForImprovement rdf:type owl:Class ;
+                             
+                             rdfs:label "Recommendation for Improvement"@en ;
+                             
+                             rdfs:subClassOf :Finding ;
+                             
+                             emf:isSearchable "true"^^xsd:boolean ;
+                             
+                             emf:canCreateInstance "true"^^xsd:boolean ;
+                             
+                             skos:definition """Recommendation for improvement a processe based on the established QMS obejctives
+
+
+""" ;
+                             
+                             dc:creator "Maria Todorova" .
+
+
+
+###  http://www.sirma.com/ontologies/2014/03/eQMS#eQMSObject
+
+:eQMSObject rdf:type owl:Class ;
+            
+            rdfs:label "QMS object"@en ;
+            
+            rdfs:subClassOf emf:DomainObject ;
+            
+            emf:canCreateInstance "false"^^xsd:boolean ;
+            
+            emf:isSearchable "true"^^xsd:boolean ;
+            
+            dc:creator "Maria Todorova" ;
+            
+            skos:definition """Quality Managment System (QMS) object main class for every ontology that extends the current.
+
+This class is the parent class for all specific for the QMS domain objects.
+
+A quality management system (QMS) is a collection of business processes focused on achieving company quality policy and quality objectives — i.e. what customer wants and needs. It is expressed as the organizational structure, policies, procedures, processes and resources needed to implement quality management.
+
+"""@en .
+
+
+
+
+###  Generated by the OWL API (version 3.4.2) http://owlapi.sourceforge.net
+

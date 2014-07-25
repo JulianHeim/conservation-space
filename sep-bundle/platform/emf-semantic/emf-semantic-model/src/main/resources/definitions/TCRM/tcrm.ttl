@@ -1,0 +1,233 @@
+@prefix : <http://www.sirma.com/ontologies/2014/07/tcrmConfiguration#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix emf: <http://ittruse.ittbg.com/ontology/enterpriseManagementFramework#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ptop: <http://www.ontotext.com/proton/protontop#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix tcrm: <http://www.sirma.com/ontologies/2014/07/tcrmConfiguration#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@base <http://www.sirma.com/ontologies/2014/07/tcrmConfiguration> .
+
+<http://www.sirma.com/ontologies/2014/07/tcrmConfiguration> rdf:type owl:Ontology ;
+                                                            
+                                                            rdfs:label "Trade and Customer Relationship Management Model"@en ;
+                                                            
+                                                            dc:creator "Lidiya Dimitrova" ;
+                                                            
+                                                            dc:subject "Trade and Customer Relationship Management Model"@en ;
+                                                            
+                                                            owl:versionInfo "v 1.0" ;
+                                                            
+                                                            skos:definition """Trade and Customer Relationship Management
+TCRM Ontology"""@en ;
+                                                            
+                                                            owl:imports <http://ittruse.ittbg.com/ontology/enterpriseManagementFramework> .
+
+
+#################################################################
+#
+#    Object Properties
+#
+#################################################################
+
+
+###  http://www.sirma.com/ontologies/2014/07/tcrmConfiguration#isOrderBy
+
+:isOrderBy rdf:type owl:ObjectProperty ;
+           
+           rdfs:label "is order by"@en ;
+           
+           dc:creator "Lidiya Dimitrova" ;
+           
+           skos:definition "Relationship between Product and Customer. The product is ordered by customer."@en ;
+           
+           rdfs:range emf:Customer ;
+           
+           rdfs:domain :Product ;
+           
+           owl:inverseOf :sendsAnOrderFor .
+
+
+
+###  http://www.sirma.com/ontologies/2014/07/tcrmConfiguration#isProducedBy
+
+:isProducedBy rdf:type owl:ObjectProperty ;
+              
+              rdfs:label "produced by"@en ;
+              
+              dc:creator "Lidiya Dimitrova" ;
+              
+              skos:definition "Relationship between Product and Factory. The product is produced by factory."@en ;
+              
+              rdfs:range :Factory ;
+              
+              rdfs:domain :Product ;
+              
+              owl:inverseOf :produces .
+
+
+
+###  http://www.sirma.com/ontologies/2014/07/tcrmConfiguration#produces
+
+:produces rdf:type owl:ObjectProperty ;
+          
+          rdfs:label "produces"@en ;
+          
+          dc:creator "Lidiya DImitrova" ;
+          
+          skos:definition "Relationship between Factory and Product. The product is produced by a factory."@en ;
+          
+          rdfs:domain :Factory ;
+          
+          rdfs:range :Product .
+
+
+
+###  http://www.sirma.com/ontologies/2014/07/tcrmConfiguration#sendsAnOrderFor
+
+:sendsAnOrderFor rdf:type owl:ObjectProperty ;
+                 
+                 rdfs:label "sends an order for"@en ;
+                 
+                 dc:creator "Lidiya DImitrova" ;
+                 
+                 skos:definition "Relationship between Product and Customer. The product is ordered by customer."@en ;
+                 
+                 rdfs:domain emf:Customer ;
+                 
+                 rdfs:range :Product .
+
+
+
+
+
+#################################################################
+#
+#    Data properties
+#
+#################################################################
+
+
+###  http://www.sirma.com/ontologies/2014/07/tcrmConfiguration#address
+
+:address rdf:type owl:DatatypeProperty ;
+         
+         rdfs:label "Address"@en ;
+         
+         skos:definition "An address is a collection of information, presented in a mostly fixed format, used for describing the location of a building, apartment, or other structure or a plot of land, generally using political boundaries and street names as references, along with other identifiers such as house or apartment numbers. "@en ;
+         
+         dc:creator "Lidiya Dimitrova"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2014/07/tcrmConfiguration#articleNumber
+
+:articleNumber rdf:type owl:DatatypeProperty ;
+               
+               rdfs:label "Article Number"@en ;
+               
+               dc:creator "Lidiya Dimitrova" ;
+               
+               skos:definition "Unique product identifier"@en ;
+               
+               rdfs:domain :Product .
+
+
+
+###  http://www.sirma.com/ontologies/2014/07/tcrmConfiguration#country
+
+:country rdf:type owl:DatatypeProperty ;
+         
+         rdfs:label "Country"@en ;
+         
+         dc:creator "Lidiya Dimitrova" ;
+         
+         skos:definition "A country is a region identified as a distinct entity in political geography."@en .
+
+
+
+###  http://www.sirma.com/ontologies/2014/07/tcrmConfiguration#id
+
+:id rdf:type owl:DatatypeProperty ;
+    
+    rdfs:label "Identifier/VAT number"@en ;
+    
+    skos:definition "Company identifier/VAT number"@en ;
+    
+    dc:creator "Lidiya Dimitrova" .
+
+
+
+
+
+#################################################################
+#
+#    Classes
+#
+#################################################################
+
+
+###  http://ittruse.ittbg.com/ontology/enterpriseManagementFramework#Customer
+
+emf:Customer emf:isPartOfObjectLibrary "true"^^xsd:boolean .
+
+
+
+###  http://www.sirma.com/ontologies/2014/07/tcrmConfiguration#Factory
+
+:Factory rdf:type owl:Class ;
+         
+         rdfs:label "Factory"@en ;
+         
+         rdfs:subClassOf ptop:Agent ,
+                         :TCRMDomainObject ;
+         
+         emf:isSearchable "true"^^xsd:boolean ;
+         
+         emf:isPartOfObjectLibrary "true"^^xsd:boolean ;
+         
+         dc:creator "Lidiya Dimitrova" ;
+         
+         skos:definition "Factory is the seat of some kind of production"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2014/07/tcrmConfiguration#Product
+
+:Product rdf:type owl:Class ;
+         
+         rdfs:label "Product"@en ;
+         
+         rdfs:subClassOf :TCRMDomainObject ;
+         
+         emf:isPartOfObjectLibrary "true"^^xsd:boolean ;
+         
+         emf:isSearchable "true"^^xsd:boolean ;
+         
+         skos:definition "A product is anything that can be offered to a market that might satisfy a want or need."@en ;
+         
+         dc:creator "Lidiya Dimitrova" .
+
+
+
+###  http://www.sirma.com/ontologies/2014/07/tcrmConfiguration#TCRMDomainObject
+
+:TCRMDomainObject rdf:type owl:Class ;
+                  
+                  rdfs:label "TCRM Domain Object"@en ;
+                  
+                  rdfs:subClassOf emf:DomainObject ;
+                  
+                  dc:creator "Lidiya Dimitrova" ;
+                  
+                  skos:definition "Main Class for the TCRM Domain model"@en .
+
+
+
+
+###  Generated by the OWL API (version 3.4.2) http://owlapi.sourceforge.net
+

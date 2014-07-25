@@ -1,0 +1,1287 @@
+@prefix : <http://www.sirma.com/ontologies/2013/10/pdmConfiguration#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix emf: <http://ittruse.ittbg.com/ontology/enterpriseManagementFramework#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pdm: <http://www.sirma.com/ontologies/2013/10/pdmConfiguration#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@base <http://www.sirma.com/ontologies/2013/10/pdmConfiguration> .
+
+<http://www.sirma.com/ontologies/2013/10/pdmConfiguration> rdf:type owl:Ontology ;
+                                                           
+                                                           rdfs:label "Product Domain Model"@en ;
+                                                           
+                                                           owl:versionInfo "0.2"@en ;
+                                                           
+                                                           dc:creator "Kiril Penev"@en ;
+                                                           
+                                                           dc:subject "Product Domain Model"@en ;
+                                                           
+                                                           skos:definition """Product data management 
+PDM Ontology"""@en ;
+                                                           
+                                                           owl:imports <http://ittruse.ittbg.com/ontology/enterpriseManagementFramework> .
+
+
+#################################################################
+#
+#    Annotation properties
+#
+#################################################################
+
+
+###  http://ittruse.ittbg.com/ontology/enterpriseManagementFramework#isSearchable
+
+emf:isSearchable rdf:type owl:AnnotationProperty .
+
+
+
+###  http://purl.org/dc/elements/1.1/creator
+
+dc:creator rdf:type owl:AnnotationProperty .
+
+
+
+###  http://www.w3.org/2004/02/skos/core#definition
+
+skos:definition rdf:type owl:AnnotationProperty .
+
+
+
+
+
+#################################################################
+#
+#    Object Properties
+#
+#################################################################
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#electricaEngineerChecked
+
+:electricaEngineerChecked rdf:type owl:ObjectProperty .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#electricalEngineerApproval
+
+:electricalEngineerApproval rdf:type owl:ObjectProperty .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#engeneeringContact
+
+:engeneeringContact rdf:type owl:ObjectProperty ;
+                    
+                    rdfs:label "Engeneering Contact"@en ;
+                    
+                    skos:definition "Engeneering contact"@en ;
+                    
+                    dc:creator "Kiril Penev"@en ;
+                    
+                    rdfs:subPropertyOf emf:contactPerson .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#hasBomDetails
+
+:hasBomDetails rdf:type owl:ObjectProperty .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#hasConfigurationChart
+
+:hasConfigurationChart rdf:type owl:ObjectProperty ;
+                       
+                       rdfs:label "has configuration chart" ;
+                       
+                       skos:definition "Relationship between Product Line and Product Configuration Chart" ;
+                       
+                       dc:creator "Kiril Penev"@en ;
+                       
+                       rdfs:domain :ProductLine ;
+                       
+                       rdfs:range :ProductLineConfigurationChart .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#hasConfigurationOption
+
+:hasConfigurationOption rdf:type owl:ObjectProperty ;
+                        
+                        rdfs:label "has configuration option"@en ;
+                        
+                        dc:creator "Kiril Penev"@en ;
+                        
+                        skos:definition "Specifies which option revisions can be choosed from configuration chart revision"@en ;
+                        
+                        rdfs:range :ConfigurationOptionRevision ;
+                        
+                        rdfs:domain :ProductLineConfigurationChartRevision .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#hasConfiguredPart
+
+:hasConfiguredPart rdf:type owl:ObjectProperty ;
+                   
+                   rdfs:label "has configured part"@en ;
+                   
+                   dc:creator "Kiril Penev"@en ;
+                   
+                   skos:definition "has only one part assembly revision from configuration option revision"@en ;
+                   
+                   rdfs:range :PartRevision ;
+                   
+                   rdfs:domain [ rdf:type owl:Class ;
+                                 owl:unionOf ( :Part
+                                               :ProductConfiguration
+                                             )
+                               ] .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#hasDesign
+
+:hasDesign rdf:type owl:FunctionalProperty ,
+                    owl:ObjectProperty ;
+           
+           rdfs:label "has design"@en ;
+           
+           dc:creator "Kiril Penev"@en ;
+           
+           skos:definition "Specifies part or product instances` design"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#hasFeature
+
+:hasFeature rdf:type owl:ObjectProperty ;
+            
+            rdfs:label "has feature"@en ;
+            
+            skos:definition "Defines the part features"@en ;
+            
+            dc:creator "Kiril Penev"@en ;
+            
+            rdfs:range :Feature ;
+            
+            rdfs:domain :PartRevision .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#hasPart
+
+:hasPart rdf:type owl:ObjectProperty ;
+         
+         rdfs:label "has part"@en ;
+         
+         dc:creator "Kiril Penev"@en ;
+         
+         skos:definition "Specifies which parts are used to build the product"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#hasProductConfiguration
+
+:hasProductConfiguration rdf:type owl:ObjectProperty ;
+                         
+                         rdfs:label "has product configuration"@en ;
+                         
+                         skos:definition "Defines connection between Product model and Product Configuration"@en ;
+                         
+                         dc:creator "Kiril Penev"@en ;
+                         
+                         rdfs:domain <http://www.ontotext.com/proton/protontop#ProductModel> ;
+                         
+                         rdfs:range :ProductConfiguration .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#hasProductModel
+
+:hasProductModel rdf:type owl:ObjectProperty ;
+                 
+                 rdfs:label "has product model"@en ;
+                 
+                 skos:definition "Defines connection between Product Line and Product Model"@en ;
+                 
+                 dc:creator "Kiril Penev"@en ;
+                 
+                 rdfs:range <http://www.ontotext.com/proton/protontop#ProductModel> ;
+                 
+                 rdfs:domain :ProductLine .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#hasRevision
+
+:hasRevision rdf:type owl:ObjectProperty ;
+             
+             rdfs:label "has revision"@en ;
+             
+             skos:definition "Defines the Revision about the Object"@en ;
+             
+             dc:creator "Kiril Penev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#mechanicalEngineerApproval
+
+:mechanicalEngineerApproval rdf:type owl:ObjectProperty .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#mechanicalEngineerChecked
+
+:mechanicalEngineerChecked rdf:type owl:ObjectProperty .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#opticsApproval
+
+:opticsApproval rdf:type owl:ObjectProperty .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#opticsChecked
+
+:opticsChecked rdf:type owl:ObjectProperty .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#otherApproval
+
+:otherApproval rdf:type owl:ObjectProperty .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#otherChecked
+
+:otherChecked rdf:type owl:ObjectProperty .
+
+
+
+
+
+#################################################################
+#
+#    Data properties
+#
+#################################################################
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#additionalDistribution
+
+:additionalDistribution rdf:type owl:DatatypeProperty .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#author
+
+:author rdf:type owl:DatatypeProperty ;
+        
+        rdfs:label "Author"@en ;
+        
+        skos:definition "TBD ..."@en ;
+        
+        dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#availableQuantity
+
+:availableQuantity rdf:type owl:DatatypeProperty ;
+                   
+                   rdfs:label "Available Quantity"@en ;
+                   
+                   skos:definition "Available Quantity"@en ;
+                   
+                   dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#changes
+
+:changes rdf:type owl:DatatypeProperty .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#city
+
+:city rdf:type owl:DatatypeProperty ;
+      
+      rdfs:label "City"@en ;
+      
+      skos:definition "TBD ..."@en ;
+      
+      dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#contactMethod
+
+:contactMethod rdf:type owl:DatatypeProperty ;
+               
+               rdfs:label "Contact Method"@en ;
+               
+               skos:definition "TBD ..."@en ;
+               
+               dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#contactPoint
+
+:contactPoint rdf:type owl:DatatypeProperty ;
+              
+              rdfs:label "Contact Point"@en ;
+              
+              skos:definition "TBD ..."@en ;
+              
+              dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#country
+
+:country rdf:type owl:DatatypeProperty ;
+         
+         rdfs:label "Country"@en ;
+         
+         skos:definition "TBD ..."@en ;
+         
+         dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#customerId
+
+:customerId rdf:type owl:DatatypeProperty ;
+            
+            rdfs:label "Customer ID"@en ;
+            
+            skos:definition "TBD ..."@en ;
+            
+            dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#customerName
+
+:customerName rdf:type owl:DatatypeProperty ;
+              
+              rdfs:label "Customer Name"@en ;
+              
+              skos:definition "Customer Name"@en ;
+              
+              dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#customerNumber
+
+:customerNumber rdf:type owl:DatatypeProperty ;
+                
+                rdfs:label "Customer Number"@en ;
+                
+                skos:definition "TBD ..."@en ;
+                
+                dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#customerOrder
+
+:customerOrder rdf:type owl:DatatypeProperty ;
+               
+               rdfs:label "Customer Order"@en ;
+               
+               skos:definition "Customer Order"@en ;
+               
+               dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#dateOfManufacturing
+
+:dateOfManufacturing rdf:type owl:DatatypeProperty ;
+                     
+                     rdfs:label "Date of Manufacturing"@en ;
+                     
+                     dc:creator "Teodor Martev"@en ;
+                     
+                     skos:definition "The date when the machine is manufactured"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#dateRangeFrom
+
+:dateRangeFrom rdf:type owl:DatatypeProperty ;
+               
+               rdfs:label "Date Range From"@en ;
+               
+               skos:definition "Date Range From"@en ;
+               
+               dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#dateRangeTo
+
+:dateRangeTo rdf:type owl:DatatypeProperty ;
+             
+             rdfs:label "Date Range To"@en ;
+             
+             skos:definition "Date Range To"@en ;
+             
+             dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#destination
+
+:destination rdf:type owl:DatatypeProperty ;
+             
+             rdfs:label "Destination"@en ;
+             
+             skos:definition "Destination"@en ;
+             
+             dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#distribution
+
+:distribution rdf:type owl:DatatypeProperty .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#engeneeringProjectNumber
+
+:engeneeringProjectNumber rdf:type owl:DatatypeProperty ;
+                          
+                          rdfs:subPropertyOf emf:id .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#hasValue
+
+:hasValue rdf:type owl:DatatypeProperty ,
+                   owl:FunctionalProperty ;
+          
+          rdfs:label "has value"@en ;
+          
+          skos:definition "Defines the Feature value"@en ;
+          
+          dc:creator "Kiril Penev"@en ;
+          
+          rdfs:domain :Feature ;
+          
+          rdfs:range rdfs:Literal .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#inStockQuantity
+
+:inStockQuantity rdf:type owl:DatatypeProperty ;
+                 
+                 rdfs:label "In Stock Quantity"@en ;
+                 
+                 skos:definition "In Stock Quantity"@en ;
+                 
+                 dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#installDate
+
+:installDate rdf:type owl:DatatypeProperty ;
+             
+             rdfs:domain :PartInstance ;
+             
+             rdfs:range xsd:dateTime .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#jobQuantity
+
+:jobQuantity rdf:type owl:DatatypeProperty ;
+             
+             rdfs:label "Job Quantity"@en ;
+             
+             skos:definition "Job Quantity"@en ;
+             
+             dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#label
+
+:label rdf:type owl:DatatypeProperty ;
+       
+       rdfs:label "Label"@en ;
+       
+       skos:definition "Label"@en ;
+       
+       dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#language
+
+:language rdf:type owl:DatatypeProperty ;
+          
+          rdfs:label "Language"@en ;
+          
+          skos:definition "TBD ..."@en ;
+          
+          dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#location
+
+:location rdf:type owl:DatatypeProperty ;
+          
+          rdfs:label "Location"@en ;
+          
+          skos:definition "TBD ..."@en ;
+          
+          dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#machineInstanceId
+
+:machineInstanceId rdf:type owl:DatatypeProperty ;
+                   
+                   rdfs:label "Machine Instance ID"@en ;
+                   
+                   skos:definition "TBD ..."@en ;
+                   
+                   dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#machineInstanceType
+
+:machineInstanceType rdf:type owl:DatatypeProperty ;
+                     
+                     rdfs:label "Machine Instance Type"@en ;
+                     
+                     skos:definition "TBD ..."@en ;
+                     
+                     dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#machineModel
+
+:machineModel rdf:type owl:DatatypeProperty ;
+              
+              rdfs:label "Machine Model"@en ;
+              
+              skos:definition "Machine Model"@en ;
+              
+              dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#machineModelId
+
+:machineModelId rdf:type owl:DatatypeProperty ;
+                
+                rdfs:label "Machine Model ID"@en ;
+                
+                skos:definition "TBD ..."@en ;
+                
+                dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#machineModelType
+
+:machineModelType rdf:type owl:DatatypeProperty ;
+                  
+                  rdfs:label "Machine Model Type"@en ;
+                  
+                  skos:definition "TBD ..."@en ;
+                  
+                  dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#model
+
+:model rdf:type owl:DatatypeProperty ;
+       
+       rdfs:label "Model"@en ;
+       
+       skos:definition "Model"@en ;
+       
+       dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#orderDate
+
+:orderDate rdf:type owl:DatatypeProperty ;
+           
+           rdfs:label "Oreder Date"@en ;
+           
+           skos:definition "Order Date"@en ;
+           
+           dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#partDesignId
+
+:partDesignId rdf:type owl:DatatypeProperty ;
+              
+              rdfs:label "Part Design ID"@en ;
+              
+              skos:definition "TBD ..."@en ;
+              
+              dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#partFamilyCode
+
+:partFamilyCode rdf:type owl:DatatypeProperty ;
+                
+                rdfs:label "Part Family Code"@en ;
+                
+                skos:definition "TBD ..."@en ;
+                
+                dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#partInstallDate
+
+:partInstallDate rdf:type owl:DatatypeProperty ;
+                 
+                 rdfs:label "Part Install Date"@en ;
+                 
+                 skos:definition "TBD ..."@en ;
+                 
+                 dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#partInstanceId
+
+:partInstanceId rdf:type owl:DatatypeProperty ;
+                
+                rdfs:label "Part Instance ID"@en ;
+                
+                skos:definition "TBD ..."@en ;
+                
+                dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#partItem
+
+:partItem rdf:type owl:DatatypeProperty ;
+          
+          rdfs:label "Part/Machine Item"@en ;
+          
+          skos:definition "TBD ..."@en ;
+          
+          dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#partLevel
+
+:partLevel rdf:type owl:DatatypeProperty ;
+           
+           rdfs:label "Part Level"@en ;
+           
+           skos:definition "Part Level"@en ;
+           
+           dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#partManufacturerName
+
+:partManufacturerName rdf:type owl:DatatypeProperty ;
+                      
+                      rdfs:label "Part Manufacturer Name"@en ;
+                      
+                      skos:definition "Part Manufacturer Name"@en ;
+                      
+                      dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#partManufacturerPartNumber
+
+:partManufacturerPartNumber rdf:type owl:DatatypeProperty ;
+                            
+                            rdfs:label "Part Manufacturer Part Number"@en ;
+                            
+                            skos:definition "Part Manufacturer Part Number"@en ;
+                            
+                            dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#partNumber
+
+:partNumber rdf:type owl:DatatypeProperty ;
+            
+            rdfs:label "Part Number"@en ;
+            
+            skos:definition "Part Number"@en ;
+            
+            dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#partRevision
+
+:partRevision rdf:type owl:DatatypeProperty ;
+              
+              rdfs:label "Part Revision"@en ;
+              
+              skos:definition "TBD ..."@en ;
+              
+              dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#quantity
+
+:quantity rdf:type owl:DatatypeProperty ;
+          
+          rdfs:label "quantity"@en ;
+          
+          dc:creator "Kiril Penev"@en ;
+          
+          skos:definition "Part quantity"@en ;
+          
+          rdfs:domain :PartInstance ;
+          
+          rdfs:range xsd:integer .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#quantityFrom
+
+:quantityFrom rdf:type owl:DatatypeProperty .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#quantityTo
+
+:quantityTo rdf:type owl:DatatypeProperty .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#qviCompanyId
+
+:qviCompanyId rdf:type owl:DatatypeProperty ;
+              
+              rdfs:label "QVI Company ID"@en ;
+              
+              skos:definition "TBD ..."@en ;
+              
+              dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#qviDepartmentId
+
+:qviDepartmentId rdf:type owl:DatatypeProperty ;
+                 
+                 rdfs:label "QVI Department ID"@en ;
+                 
+                 skos:definition "TBD ..."@en ;
+                 
+                 dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#revFrom
+
+:revFrom rdf:type owl:DatatypeProperty .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#revTo
+
+:revTo rdf:type owl:DatatypeProperty .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#revision
+
+:revision rdf:type owl:DatatypeProperty ;
+          
+          rdfs:label "Revision"@en ;
+          
+          skos:definition "TBD ..."@en ;
+          
+          dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#serialNumber
+
+:serialNumber rdf:type owl:DatatypeProperty ;
+              
+              rdfs:label "Serial Number"@en ;
+              
+              skos:definition "Serial Number"@en ;
+              
+              dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#shipmentDate
+
+:shipmentDate rdf:type owl:DatatypeProperty ;
+              
+              rdfs:label "Shipment Date"@en ;
+              
+              skos:definition "Shipment Date"@en ;
+              
+              dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#soldQuantity
+
+:soldQuantity rdf:type owl:DatatypeProperty ;
+              
+              rdfs:label "Sold Quantity"@en ;
+              
+              skos:definition "Sold Quantity"@en ;
+              
+              dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#takenBy
+
+:takenBy rdf:type owl:DatatypeProperty ;
+         
+         rdfs:label "Taken By"@en ;
+         
+         skos:definition "Taken By"@en ;
+         
+         dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#timeZone
+
+:timeZone rdf:type owl:DatatypeProperty ;
+          
+          rdfs:label "Time Zone"@en ;
+          
+          skos:definition "TBD ..."@en ;
+          
+          dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#um
+
+:um rdf:type owl:DatatypeProperty ;
+    
+    rdfs:label "UM"@en ;
+    
+    skos:definition "TBD: UM"@en ;
+    
+    dc:creator "Teodor Martev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#updateCode
+
+:updateCode rdf:type owl:DatatypeProperty .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#usedOnNewPart
+
+:usedOnNewPart rdf:type owl:DatatypeProperty .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#usedQuantity
+
+:usedQuantity rdf:type owl:DatatypeProperty ;
+              
+              rdfs:label "Used Quantity"@en ;
+              
+              dc:creator "Lyubomir Marinov"@en ;
+              
+              skos:definition "Part Used Quantity"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#vendorId
+
+:vendorId rdf:type owl:DatatypeProperty ;
+          
+          rdfs:label "Vendor ID"@en ;
+          
+          skos:definition "TBD ..."@en ;
+          
+          dc:creator "Teodor Martev"@en .
+
+
+
+
+
+#################################################################
+#
+#    Classes
+#
+#################################################################
+
+
+###  http://ittruse.ittbg.com/ontology/enterpriseManagementFramework#DomainObject
+
+emf:DomainObject rdf:type owl:Class .
+
+
+
+###  http://ittruse.ittbg.com/ontology/enterpriseManagementFramework#Vendor
+
+emf:Vendor rdfs:subClassOf emf:Company .
+
+
+
+###  http://www.ontotext.com/proton/protontop#ProductModel
+
+<http://www.ontotext.com/proton/protontop#ProductModel> rdf:type owl:Class ;
+                                                        
+                                                        rdfs:subClassOf :DesignObject ;
+                                                        
+                                                        emf:isSearchable "true"^^xsd:boolean .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#ConfigurationOption
+
+:ConfigurationOption rdf:type owl:Class ;
+                     
+                     rdfs:label "Configuration Option"@en ;
+                     
+                     rdfs:subClassOf :DesignObject ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty :hasRevision ;
+                                       owl:someValuesFrom :ConfigurationOptionRevision
+                                     ] ;
+                     
+                     emf:isSearchable "true"^^xsd:boolean ;
+                     
+                     skos:definition "Configuration Option describes the category in a Product Line Configuration Chart and a list of revisions with description of change. "@en ;
+                     
+                     dc:creator "Kiril Penev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#ConfigurationOptionRevision
+
+:ConfigurationOptionRevision rdf:type owl:Class ;
+                             
+                             rdfs:label "Configuration Option Revision"@en ;
+                             
+                             rdfs:subClassOf :DesignObject ,
+                                             [ rdf:type owl:Restriction ;
+                                               owl:onProperty :hasPart ;
+                                               owl:someValuesFrom :PartRevision
+                                             ] ;
+                             
+                             skos:definition """Configuration option revision specifies a state of list of part revisions (assemblies) in a certain period of time from which only one can be choosed when building product configuration. Adding, changing or removing parts from the list creates new Configuration Option revision.
+
+
+
+of a state in time of Configuration Option
+
+
+
+the list of assemblies from which only one can be choosed for this specific category in a Product Line Configuration Chart."""@en ;
+                             
+                             dc:creator "Kiril Penev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#DesignObject
+
+:DesignObject rdf:type owl:Class ;
+              
+              rdfs:label "Design object"@en ;
+              
+              rdfs:subClassOf :PDMDomainObject ;
+              
+              dc:creator "Kiril Penev"@en ;
+              
+              skos:definition "Specifies the classes for designing a product configuration"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#EngeneeringChangeNotice
+
+:EngeneeringChangeNotice rdf:type owl:Class ;
+                         
+                         rdfs:label "Engeneering Change Notice"@en ;
+                         
+                         rdfs:subClassOf <http://www.ontotext.com/proton/protontop#Document> ;
+                         
+                         emf:isSearchable "true"^^xsd:boolean ;
+                         
+                         skos:definition "ECN Document"@en ;
+                         
+                         dc:creator "Kiril Penev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#Feature
+
+:Feature rdf:type owl:Class ;
+         
+         rdfs:label "Feature"@en ;
+         
+         rdfs:subClassOf :DesignObject ;
+         
+         emf:isSearchable "true"^^xsd:boolean ;
+         
+         skos:definition "Feature is a characteristic of Part. Feature has name and value."@en ;
+         
+         dc:creator "Kiril Penev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#InstanceObject
+
+:InstanceObject rdf:type owl:Class ;
+                
+                rdfs:label "Instance Object"@en ;
+                
+                rdfs:subClassOf :PDMDomainObject ;
+                
+                dc:creator "Kiril Penev"@en ;
+                
+                skos:definition "Specifies the classes for manufactured products and parts according to a described design"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#PDMDomainObject
+
+:PDMDomainObject rdf:type owl:Class ;
+                 
+                 rdfs:label "PDM Domain Object"@en ;
+                 
+                 rdfs:subClassOf emf:DomainObject ;
+                 
+                 dc:creator "Kiril Penev"@en ;
+                 
+                 skos:definition "Main Class for the PDM Domain model"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#Part
+
+:Part rdf:type owl:Class ;
+      
+      rdfs:label "Part Design"@en ;
+      
+      rdfs:subClassOf :DesignObject ,
+                      [ rdf:type owl:Restriction ;
+                        owl:onProperty :hasRevision ;
+                        owl:someValuesFrom :PartRevision
+                      ] ;
+      
+      emf:isSearchable "true"^^xsd:boolean ;
+      
+      dc:creator "Kiril Penev"@en ;
+      
+      skos:definition "Part is a description of an assembly (compound part) or a single part. It has a list of revisions that contain the state of the part in time. "@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#PartInstance
+
+:PartInstance rdf:type owl:Class ;
+              
+              rdfs:label "Part Instance"@en ;
+              
+              rdfs:subClassOf :InstanceObject ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty :hasDesign ;
+                                owl:allValuesFrom :PartRevision
+                              ] ;
+              
+              emf:isSearchable "true"^^xsd:boolean ;
+              
+              dc:creator "Kiril Penev"@en ;
+              
+              skos:definition "Manifactured Part according to Part Revision"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#PartRevision
+
+:PartRevision rdf:type owl:Class ;
+              
+              rdfs:label "Part Revision"@en ;
+              
+              rdfs:subClassOf :DesignObject ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty :hasConfiguredPart ;
+                                owl:someValuesFrom :PartRevision
+                              ] ;
+              
+              dc:creator "Kiril Penev"@en ;
+              
+              skos:definition "Part Revision can be a single part or an assembly of parts. It describes the state of the design of the part in certain period of time. When the design is changed then a new Part Revision is created. A Product configuration revision is created based on the parts revisions. If the Revision is for a compound part then it will have a list of part revisions that build the compound part."@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#ProductConfiguration
+
+:ProductConfiguration rdf:type owl:Class ;
+                      
+                      rdfs:label "Machine Configuration"@en ;
+                      
+                      rdfs:subClassOf :DesignObject ,
+                                      [ rdf:type owl:Restriction ;
+                                        owl:onProperty :hasRevision ;
+                                        owl:someValuesFrom :ProductConfigurationRevision
+                                      ] ;
+                      
+                      emf:isSearchable "true"^^xsd:boolean ;
+                      
+                      dc:creator "Kiril Penev"@en ;
+                      
+                      skos:definition "Specifies which Product model is desined and the life cycle of product design. This life cycle is represented by a list of Product Configuration Revisions."@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#ProductConfigurationRevision
+
+:ProductConfigurationRevision rdf:type owl:Class ;
+                              
+                              rdfs:label "Machine Configuration Revision"@en ;
+                              
+                              rdfs:subClassOf :DesignObject ,
+                                              [ rdf:type owl:Restriction ;
+                                                owl:onProperty :hasConfiguredPart ;
+                                                owl:someValuesFrom :PartRevision
+                                              ] ;
+                              
+                              dc:creator "Kiril Penev"@en ;
+                              
+                              skos:definition "Product Configuration Revision represents a list of specific parts selected from specific Configuration option used to build the Product Configuration. The product is manufactured according to a specific Product Configuration Revision"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#ProductInstance
+
+:ProductInstance rdf:type owl:Class ;
+                 
+                 rdfs:label "Machine Instance"@en ;
+                 
+                 rdfs:subClassOf :InstanceObject ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty :hasPart ;
+                                   owl:someValuesFrom :PartInstance
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty :hasDesign ;
+                                   owl:allValuesFrom :ProductConfigurationRevision
+                                 ] ;
+                 
+                 emf:isSearchable "true"^^xsd:boolean ;
+                 
+                 dc:creator "Kiril Penev"@en ;
+                 
+                 skos:definition "Manifactured products according to Product Configuration Revision. The product can be a Machine, Assembly, Software or etc. The product is made of parts that are specified in Part Instance"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#ProductLine
+
+:ProductLine rdf:type owl:Class ;
+             
+             rdfs:label "Product line"@en ;
+             
+             rdfs:subClassOf :DesignObject ;
+             
+             emf:isSearchable "true"^^xsd:boolean ;
+             
+             skos:definition "A group of related products manufactured by a single company. Product line defines the name of the product and the configuration chart for the product on design level. For example \"Smartscope 5\"."@en ;
+             
+             rdfs:comment "Isn`t product line a property of the Product line configuration chart?"@en ;
+             
+             dc:creator "Kiril Penev"@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#ProductLineConfigurationChart
+
+:ProductLineConfigurationChart rdf:type owl:Class ;
+                               
+                               rdfs:label "Product line configuration chart"@en ;
+                               
+                               rdfs:subClassOf :DesignObject ,
+                                               [ rdf:type owl:Restriction ;
+                                                 owl:onProperty :hasRevision ;
+                                                 owl:someValuesFrom :ProductLineConfigurationChartRevision
+                                               ] ;
+                               
+                               emf:isSearchable "true"^^xsd:boolean ;
+                               
+                               dc:creator "Kiril Penev"@en ;
+                               
+                               skos:definition "Product line configuration chart groups configuration chart revisions for a product line. The revision is implemented in the class ProductLineConfigurationChartRevision. "@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#ProductLineConfigurationChartRevision
+
+:ProductLineConfigurationChartRevision rdf:type owl:Class ;
+                                       
+                                       rdfs:label "Product line configuration chart revision"@en ;
+                                       
+                                       rdfs:subClassOf :DesignObject ;
+                                       
+                                       dc:creator "Kiril Penev"@en ;
+                                       
+                                       skos:definition "Revision represents a state of Product line configuration chart at certain point of time. Describes the changes made on the chart and the person that made the changes. Also describes the possible configuration options that can be choosed for the design of the product configuration. "@en .
+
+
+
+###  http://www.sirma.com/ontologies/2013/10/pdmConfiguration#QVICompany
+
+:QVICompany rdf:type owl:Class ;
+            
+            rdfs:label "QVI Company"@en ;
+            
+            rdfs:subClassOf emf:Company ;
+            
+            emf:isSearchable "true"^^xsd:boolean ;
+            
+            skos:definition "A Company that is part of QVI organization"@en ;
+            
+            dc:creator "Kiril Penev"@en .
+
+
+
+
+###  Generated by the OWL API (version 3.4.2) http://owlapi.sourceforge.net
+
