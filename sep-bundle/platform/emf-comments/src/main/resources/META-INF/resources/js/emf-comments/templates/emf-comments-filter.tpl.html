@@ -1,0 +1,70 @@
+<div class="emf-comments-filter-wrapper">
+	<button type="button" class="btn btn-default btn-sm"  data-ng-click="toggleFilter()">
+		Filter
+	</button>
+
+	<button type="button" class="btn btn-default btn-sm" data-ng-click="toggleSort()">
+		Sort
+	</button>
+	
+	<div class="emf-comments-filter-popout" data-ng-show="showFilterPopout">
+		<table>
+			<tr>
+				<td>Author</td>
+				<td>
+					<select-one-ajax style="width: 200px;" data-model="filterCriteria.userFilter" data-url="url"></select-one-ajax>
+				</td>
+				
+				<td>Keyword</td>
+				<td>
+					<input type="text" class="emf-comment-filter-keyword form-control input-sm" data-ng-model="filterCriteria.keyword"></input>
+				</td>
+			</tr>
+			<tr>
+				<td>From Date</td>
+				<td>
+					<date-picker data-model="filterCriteria.dateFrom" data-options="datePickerOptions"></date-picker>
+				</td>
+				
+				<td>To Date</td>
+				<td>
+					<date-picker data-model="filterCriteria.dateTo" data-options="datePickerOptions"></date-picker>
+				</td>
+			</tr>
+			<tr>
+				<td>Category</td>
+				<td>
+					<select-one style="width: 200px;" data-model="filterCriteria.category" data-options="categories"></select-one>
+				</td>
+				
+				<td>Status</td>
+				<td>
+					<select-one style="width: 200px;" data-model="filterCriteria.status" data-options="statuses"></select-one>
+				</td>
+			</tr>
+			<tr>
+				<td>Tags</td>
+				<td>
+					<tag-select style="width: 200px;" data-model="filterCriteria.tags" data-tags="getAvailableTags()"></tag-select>
+				</td>
+			</tr>
+		</table>
+		
+		<div style="margin-top: 10px; margin-bottom: 10px;" class="pull-right">
+			<button type="button" class="btn btn-primary" data-ng-click="applyFilter()">Filter</button>
+			<button type="button" class="btn btn-default" data-ng-click="resetFields()">Reset</button>
+			<button type="button" class="btn btn-default" data-ng-click="close()">Cancel</button>
+		</div>
+	</div>
+	
+	<div class="emf-comments-sort-popout"  data-ng-show="showSortPopout">
+		<label>
+			<input type="radio" data-ng-model="filterCriteria.sortBy" value="createdOn" name="sortBy" data-ng-change="applyFilter()" />
+			Creation date
+		</label>
+		<label>
+			<input type="radio" data-ng-model="filterCriteria.sortBy" value="modifiedOn" name="sortBy" data-ng-change="applyFilter()" />
+			Last comment date
+		</label>
+	</div>
+</div>

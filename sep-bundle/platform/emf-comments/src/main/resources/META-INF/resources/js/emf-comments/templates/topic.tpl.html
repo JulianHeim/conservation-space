@@ -1,0 +1,34 @@
+<div class="topic-wrapper" data-ng-class="{ 'collapsed': collapsed }">
+	<inline-comment class="topic" data-ng-hide="editing && inline" data-model="topic" data-collapsed="collapsed" data-for-topic="true">
+		<div class="topic-content emf-tiny-editor" data-ng-bind-html="topic.content | trustAsHtmlFilter"></div>
+	</inline-comment>
+	
+	<inline-comment-editor data-ng-if="editing && inline" 
+		data-model="editModel" 
+		data-on-save="updateTopic()"
+		data-toggle-editor-mode="togglePopupEditor()">
+	</inline-comment-editor>
+
+	<popup-comment-editor data-ng-if="editing && !inline" 
+		data-model="editModel" 
+		data-on-save="updateTopic()"
+		data-on-cancel="cancelEditTopic()"
+		data-for-topic="true">
+	</popup-comment-editor>
+
+	<div class="topic-replies-wrapper clearfix" data-ng-hide="collapsed">
+		<reply data-ng-show="repliesLoaded" data-ng-repeat="reply in topic.children"></reply>
+	</div>
+
+	<inline-comment-editor class="inline-reply" data-ng-if="!collapsed && inlineReply"
+		data-model="newReply" 
+		data-on-save="saveNewReply()"
+		data-toggle-editor-mode="togglePopupReplyEditor()">
+	</inline-comment-editor>
+
+	<popup-comment-editor data-ng-if="!collapsed && !inlineReply" 
+		data-model="newReply" 
+		data-on-save="saveNewReply()"
+		data-on-cancel="cancelNewReply()">
+	</popup-comment-editor>
+</div>
