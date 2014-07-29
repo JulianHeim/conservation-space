@@ -56,8 +56,7 @@ public class BAMAgentImplTest {
 
 	/**
 	 * Test method for
-	 * {@link com.sirma.itt.emf.bam.agent.BAMAgentImpl#constructJsonMessage(java.lang.Object[])}
-	 * .
+	 * {@link com.sirma.itt.emf.bam.agent.BAMAgentImpl#constructJsonMessage(java.lang.Object[])} .
 	 */
 	@Test
 	public void testConstructJsonMessage() {
@@ -77,8 +76,7 @@ public class BAMAgentImplTest {
 		List<Object> payload = createPayload();
 		int responseCode = 202;
 		long sendTime = 9001;
-		String[] csvMessage = agent.constructCSVMessage(payload, responseCode,
-				sendTime);
+		String[] csvMessage = agent.constructCSVMessage(payload, responseCode, sendTime);
 
 		assertEquals(6, csvMessage.length);
 		assertEquals(String.valueOf(responseCode), csvMessage[0]);
@@ -91,13 +89,11 @@ public class BAMAgentImplTest {
 
 	/**
 	 * Test method for
-	 * {@link com.sirma.itt.emf.bam.agent.BAMAgentImpl#readFileAsString(java.lang.String)}
-	 * .
+	 * {@link com.sirma.itt.emf.bam.agent.BAMAgentImpl#readFileAsString(java.lang.String)} .
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testReadFileAsString() {
-		String expected = "testing the method readFileAsString in"
-				+ System.getProperty("line.separator") + "BAMAgentImpl";
+		String expected = "testing the method readFileAsString in BAMAgentImpl";
 		String filePath = "com/sirma/itt/emf/bam/definitions/testDefinition.def";
 		String result = agent.readFileAsString(filePath);
 
@@ -115,21 +111,18 @@ public class BAMAgentImplTest {
 	public void testInitializeStreamDefinition() {
 		MockupRESTPublisher mockup = new MockupRESTPublisher();
 		String filePath = "com/sirma/itt/emf/bam/definitions/testDefinition.def";
-		String expected = "testing the method readFileAsString in"
-				+ System.getProperty("line.separator") + "BAMAgentImpl";
+		String expected = "testing the method readFileAsString in BAMAgentImpl";
 
 		String streams = "streams";
 		String emfStream = "emf stream";
 
-		assertTrue(agent.initializeStreamDefinition(filePath, mockup, streams,
-				emfStream));
+		assertTrue(agent.initializeStreamDefinition(filePath, mockup, streams, emfStream));
 		assertEquals(expected, mockup.getContent());
 		// TODO: Is this a bad test? With a hard coded string?
 		assertEquals(emfStream, mockup.getUrl());
 
 		mockup.setCorrect(false);
-		assertFalse(agent.initializeStreamDefinition(filePath, mockup, streams,
-				emfStream));
+		assertFalse(agent.initializeStreamDefinition(filePath, mockup, streams, emfStream));
 	}
 
 	/**
@@ -146,8 +139,7 @@ public class BAMAgentImplTest {
 	public void testHandleEvent() throws IOException {
 		MockupRESTPublisher publisher = new MockupRESTPublisher();
 
-		String filePath = System.getProperty("user.home")
-				+ "\\testingCSVLogger.txt";
+		String filePath = System.getProperty("user.home") + "\\testingCSVLogger.txt";
 		TestUtils.deleteFile(filePath);
 		CSVLogger csvLogger = new CSVLogger(filePath, '#');
 
