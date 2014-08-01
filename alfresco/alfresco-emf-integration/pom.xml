@@ -107,7 +107,6 @@
 		<module>alfresco-pmf</module>
 		<module>alfresco-obj</module>
 		<module>alfresco</module>
-		<module>runner</module>
 	</modules>
 	<build>
 		<plugins>
