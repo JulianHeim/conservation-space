@@ -17,6 +17,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
@@ -32,14 +33,14 @@ import com.google.gson.JsonParser;
 
 /**
  * Performs requests to EMF restful services.
- * 
+ *
  * @author Adrian Mitev
  */
 public class Rest {
 
 	/**
 	 * Performs a get request.
-	 * 
+	 *
 	 * @param serviceUrl
 	 *            url of the rest service.
 	 * @param cookie
@@ -54,7 +55,7 @@ public class Rest {
 
 	/**
 	 * Performs a GET request.
-	 * 
+	 *
 	 * @param serviceUrl
 	 *            url of the rest service.
 	 * @param cookie
@@ -73,8 +74,28 @@ public class Rest {
 	}
 
 	/**
+	 * Performs a PUT request.
+	 *
+	 * @param serviceUrl
+	 *            url of the rest service.
+	 * @param cookie
+	 *            cookie to use within the request
+	 * @param json
+	 *            json data to post
+	 * @return query response.
+	 */
+	public static HttpResponse jsonPut(String serviceUrl, String cookie, String json) {
+		HttpPut request = new HttpPut(serviceUrl);
+		request.addHeader("Content-Type", "application/json");
+
+		request.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
+
+		return performRequest(request, cookie);
+	}
+
+	/**
 	 * Performs a POST request.
-	 * 
+	 *
 	 * @param serviceUrl
 	 *            url of the rest service.
 	 * @param cookie
@@ -102,7 +123,7 @@ public class Rest {
 
 	/**
 	 * Performs an http request and adds a cookie if provided.
-	 * 
+	 *
 	 * @param request
 	 *            request to execute
 	 * @param cookie
