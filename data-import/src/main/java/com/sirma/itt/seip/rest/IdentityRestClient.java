@@ -23,6 +23,10 @@ public class IdentityRestClient {
 		HttpResponse response = Rest.get(url + "/emf/service/identity/login?username=" + username
 				+ "&password=" + password, null);
 
+		if (response.getStatus() != 200) {
+			throw new IllegalStateException(response.getText());
+		}
+
 		return response.getCookie();
 	}
 
