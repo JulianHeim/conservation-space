@@ -20,7 +20,7 @@ public class IdentityRestClient {
 	 * @return http cookie with for the user session.
 	 */
 	public String login(String url, String username, String password) {
-		HttpResponse response = Rest.get(url + "/emf/service/identity/login?username=" + username
+		HttpResponse response = Rest.get(url + "/service/identity/login?username=" + username
 				+ "&password=" + password, null);
 
 		if (response.getStatus() != 200) {
