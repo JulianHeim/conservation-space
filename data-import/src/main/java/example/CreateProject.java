@@ -44,6 +44,8 @@ public class CreateProject {
 		properties.put("title", "Imported Book object");
 
 		// create Book domain object (definition id: EO007005);
+		// Here are the definition fields -
+		// https://cspace-test.sirmaplatform.com:8443/emf/service/administration/definition?type=objectinstance&id=EO007005
 		OperationExecutor
 				.build(applicationUrl, sessionCookie)
 				.createDomainObject(EntityType.PROJECT, project.getId(), "EO007005", content,
